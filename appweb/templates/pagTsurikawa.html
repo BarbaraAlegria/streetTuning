@@ -1,0 +1,842 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tsurikawas</title>
+<!-- Se incluye  SweetAlert2 desde la CDN para realizar la alerta -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+    const addToCartButtons = document.querySelectorAll('.btn-agregar');
+        
+        addToCartButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const product = this.closest('.catalog-item');
+            const productId = product.dataset.productId;
+            const productName = product.querySelector('.catalog-item-title').textContent;
+            const productPrice = product.querySelector('.catalog-item-price').textContent;
+  
+            const cartItem = {
+              id: productId,
+              name: productName,
+              price: productPrice
+            };
+  
+            // Obtener el carrito de localStorage o inicializar uno vacío
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  
+            // Agregar el producto al carrito
+            cart.push(cartItem);
+  
+            // Guardar el carrito actualizado en localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+  
+            // Mostrar un mensaje emergente personalizado con SweetAlert2
+            Swal.fire({
+              icon: 'success',
+              title: 'Producto agregado al carrito',
+              showConfirmButton: false,
+              timer: 1500 // Duración del mensaje en milisegundos (1.5 segundos)
+            });
+          });
+        });
+      });
+    </script>
+</head>
+<!-- Contenido de la página de accesorios -->
+<div class="pag-accesorios">
+  <!-- Imagen principal -->
+  <div class="container-fluid">
+    <img src="{% static './imagenes/principalTsurikawa.png'%}" class="img-fluid" alt="...">
+  </div>
+
+  <!-- Contenido de la página -->
+  <div class="container">
+    <style>
+      .pag-accesorios {
+        background-color: #EAEDED;
+      }
+
+      .pag-accesorios h1 {
+        color: #13AEB4;
+        text-align: center;
+      }
+
+      .catalog-item {
+        border: 2px solid #13AEB4;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      .catalog-item img {
+        max-width: 100%;
+        height: 200px;
+        /* Altura deseada */
+        object-fit: cover;
+      }
+
+      .catalog-item-title {
+        text-align: center;
+        color: #A00CBC;
+        margin-top: 10px;
+      }
+
+      .catalog-item-price {
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .add-to-cart {
+        display: block;
+        margin: 10px auto;
+        text-align: center;
+      }
+
+      .btn-agregar {
+        background-color: #13AEB4;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #0D98B6;
+      }
+    </style>
+
+    <!-- Título -->
+    <br>
+    <br>
+    <h1>Tsurikawas</h1>
+    <br>
+    <br>
+    <!-- Catálogo de imágenes -->
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="54">
+          <img src="{% static './imagenes/tsurikawa1.jpeg' %}"
+            alt="tsurikawa1" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Negro Con Papel Dorado</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="55">
+          <img src="{% static './imagenes/tsurikawa2.jpeg' %}"
+            alt="tsurikawa2" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Verde Con Escarcha Verde</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="56">
+          <img src="{% static './imagenes/tsurikawa3.jpeg' %}"
+            alt="tsurikawa3" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Blanco Con Estrellas Moradas</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="57">
+          <img src="{% static './imagenes/tsurikawa4.jpeg' %}"
+            alt="tsurikawa4" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Escarcha Rosada Con Escarcha Moradas</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="58">
+          <img src="{% static './imagenes/tsurikawa5.jpeg' %}"
+            alt="tsurikawa5" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Negro Con Escarcha Naranja</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="59">
+          <img src="{% static './imagenes/tsurikawa6.jpeg' %}"
+            alt="tsurikawa6" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Cachos Rosado Completo</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="60">
+          <img src="{% static './imagenes/tsurikawa7.jpeg' %}"
+            alt="tsurikawa7" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Flor Naranja Con Escarcha Tornasol</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="61">
+          <img src="{% static './imagenes/tsurikawa8.jpeg' %}"
+            alt="tsurikawa8" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Flor Escarcha Rosada Con Escarcha Morada</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="62">
+          <img src="{% static './imagenes/tsurikawa9.jpeg' %}"
+            alt="tsurikawa9" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Cachos Rosado Con Mariposas</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="63">
+          <img src="{% static './imagenes/tsurikawa10.jpeg' %}"
+            alt="tsurikawa10" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Cachos Azul Con Escarcha Azul</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="64">
+          <img src="{% static './imagenes/tsurikawa11.jpeg' %}"
+            alt="tsurikawa11" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Cachos Rosado Con Escarcha Verde Y Morada</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="65">
+          <img src="{% static './imagenes/tsurikawa12.jpeg' %}"
+            alt="tsurikawa12" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Cachos Negro Con Escarcha Tornasol Corazones</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="66">
+          <img src="{% static './imagenes/tsurikawa13.jpeg' %}"
+            alt="tsurikawa13" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Cachos Morado Con Escarcha Rosada</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="67">
+          <img src="{% static './imagenes/tsurikawa14.jpeg' %}"
+            alt="tsurikawa14" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Cachos Negro Con Escarcha Blanca</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="68">
+          <img src="{% static './imagenes/tsurikawa15.jpeg' %}"
+            alt="tsurikawa15" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Cachos Negro Con Con Papel Dorado</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="69">
+          <img src="{% static './imagenes/tsurikawa16.jpeg' %}"
+            alt="tsurikawa16" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Cachos Blanco Y Escarcha Azul</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="70">
+          <img src="{% static './imagenes/tsurikawa17.jpeg' %}"
+            alt="tsurikawa17" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Cachos Negro Con Papel Dorado</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="71">
+          <img src="{% static './imagenes/tsurikawa18.jpeg' %}"
+            alt="tsurikawa18" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Cachos Verde Con Escarcha Verde</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="72">
+          <img src="{% static './imagenes/tsurikawa19.jpeg' %}"
+            alt="tsurikawa19" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Cachos Blanco Con Escarcha Rosada</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="73">
+          <img src="{% static './imagenes/tsurikawa20.jpeg' %}"
+            alt="tsurikawa20" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Cachos Azul Con Escarcha Verde y Azul</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="74">
+          <img src="{% static './imagenes/tsurikawa21.jpeg' %}"
+            alt="tsurikawa21" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Normal Morado Con Escarcha Morada</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="75">
+          <img src="{% static './imagenes/tsurikawa22.jpeg' %}"
+            alt="tsurikawa22" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Normal Celeste Con Escarcha Azul De Corazón</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="76">
+          <img src="{% static './imagenes/tsurikawa23.jpeg' %}"
+            alt="tsurikawa23" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Normal Negro Con Papel Dorado</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="77">
+          <img src="{% static './imagenes/tsurikawa24.jpeg' %}"
+            alt="tsurikawa24" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Normal Azul Con Escarcha Azul</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="78">
+          <img src="{% static './imagenes/tsurikawa25.jpeg' %}"
+            alt="tsurikawa25" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Estrella Negro Con Estrellas De Colores</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="79">
+          <img src="{% static './imagenes/tsurikawa26.jpeg' %}"
+            alt="tsurikawa26" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Normal Negro Con Escarcha Roja Y Estrellas</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="80">
+          <img src="{% static './imagenes/tsurikawa27.jpeg' %}"
+            alt="tsurikawa27" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Normal Blanco Con Escarcha Dorada</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="81">
+          <img src="{% static './imagenes/tsurikawa28.jpeg' %}"
+            alt="tsurikawa28" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Normal Blanco Con Escarcha Azul Y Verde</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="82">
+          <img src="{% static './imagenes/tsurikawa29.jpeg' %}"
+            alt="tsurikawa29" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Estrella Rosado Con Escarcha Morada</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="83">
+          <img src="{% static './imagenes/tsurikawa30.jpeg' %}"
+            alt="tsurikawa30" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Esstrella Morado Con Escarcha Verde Y Morada</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="84">
+          <img src="{% static './imagenes/tsurikawa31.jpeg' %}"
+            alt="tsurikawa31" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Estrella Blanca Con Escarcha Rosada</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="85">
+          <img src="{% static './imagenes/tsurikawa32.jpeg' %}"
+            alt="tsurikawa32" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Estrella Verde <br> Translúcido</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="86">
+          <img src="{% static './imagenes/tsurikawa33.jpeg' %}"
+            alt="tsurikawa33" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Con Cola <br> Dorado</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="87">
+          <img src="{% static './imagenes/tsurikawa34.jpeg' %}"
+            alt="tsurikawa34" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Con Cola Azul Con Escarcha Celeste De Corazón</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="88">
+          <img src="{% static './imagenes/tsurikawa35.jpeg' %}"
+            alt="tsurikawa35" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Estrella Blanco Con Escarcha Morada</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="89">
+          <img src="{% static './imagenes/tsurikawa36.jpeg' %}"
+            alt="tsurikawa36" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Estrella Verde Escarcha De Estrellas Verde</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="90">
+          <img src="{% static './imagenes/tsurikawa37.jpeg' %}"
+            alt="tsurikawa37" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Con Cola Negro Con Papel Dorado</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="91">
+          <img src="{% static './imagenes/tsurikawa38.jpeg' %}"
+            alt="tsurikawa38" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Con Cola Azul Con Escarcha Azul</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="92">
+          <img src="{% static './imagenes/tsurikawa39.jpeg' %}"
+            alt="tsurikawa39" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Con Cola Celeste Translúcido Con Escarcha Celeste</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="93">
+          <img src="{% static './imagenes/tsurikawa40.jpeg' %}"
+            alt="tsurikawa40" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Con Cola Blanco Con Escarcha Morada</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="94">
+          <img src="{% static './imagenes/tsurikawa41.jpeg' %}"
+            alt="tsurikawa41" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Con Cola Escarcha Celeste y Tornasol</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="95">
+          <img src="{% static './imagenes/tsurikawa42.jpeg' %}"
+            alt="tsurikawa42" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Normal Celeste Con Escarcha Celeste Y Morada</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="96">
+          <img src="{% static './imagenes/tsurikawa43.jpeg' %}"
+            alt="tsurikawa43" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Volanete Rosado Con Escacha Rosada Tornasol</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="97">
+          <img src="{% static './imagenes/tsurikawa44.jpeg' %}"
+            alt="tsurikawa44" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Blanco Con Escarcha Blancas Tornasol</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="98">
+          <img src="{% static './imagenes/tsurikawa45.jpeg' %}"
+            alt="tsurikawa45" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Normal Blanco Con Escacha Morada Tornasol</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="99">
+          <img src="{% static './imagenes/tsurikawa46.jpeg' %}"
+            alt="tsurikawa46" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Cachos Rosado Con Escarcha Rosada</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="100">
+          <img src="{% static './imagenes/tsurikawa47.jpeg' %}"
+            alt="c" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Cachos Verde Con Escarcha Verde Y Dorada</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="101">
+          <img src="{% static './imagenes/tsurikawa48.jpeg' %}"
+            alt="tsurikawa48" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Cachos Verde Con Papel Dorado Y Verde</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="98">
+          <img src="{% static './imagenes/tsurikawa49.jpeg' %}"
+            alt="tsurikawa49" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Partido Negro Con Escarcha Morada Tornasol</div>
+          <br>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="catalog-item text-center" data-product-id="99">
+          <img src="{% static './imagenes/tsurikawa50.jpeg' %}"
+            alt="tsurikawa50" class="img-fluid">
+          <div class="catalog-item-title">Tsurikawa Corazón Con Cola Blanco Con Escarcha Azul Tornasol</div>
+          <div class="catalog-item-price">$8000</div>
+          <div class="add-to-cart">
+            <button class="btn-agregar">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    
+
+
+
+  </div>
+</div>
+</div>
+{% endblock %}

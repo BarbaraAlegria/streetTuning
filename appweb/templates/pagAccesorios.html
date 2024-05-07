@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+<!-- Contenido de la página de accesorios -->
+<div class="pag-accesorios">
+  <!-- Imagen principal -->
+  <div class="container-fluid">
+    <img src="{% static './imagenes/principalAccesorios.png'%}" class="img-fluid" alt="...">
+  </div>
+
+  <!-- Contenido de la página -->
+  <div class="container">
+    <style>
+      /* Centra el título y le da color */
+      h1 {
+        text-align: center;
+        color: #13AEB4; /* Color azul */
+        margin-bottom: 20px; /* Agrega espacio debajo del título */
+      }
+
+      /* Define estilos para los botones */
+      .btn-color {
+        display: inline-block;
+        padding: 15px 30px; /* Aumenta el tamaño de los botones */
+        margin: 10px;
+        text-decoration: none;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px; /* Aumenta el tamaño del texto de los botones */
+        cursor: pointer;
+        background-color: #13AEB4; /* Color azul */
+        transition: background-color 0.3s; /* Transición suave al cambiar de color */
+      }
+
+      /* Cambia el color al pasar el mouse */
+      .btn-color:hover {
+        background-color: #A00CBC; /* Cambia a color morado al pasar el mouse */
+      }
+    </style>
+    <br>
+    <br>
+    <!-- Título -->
+    <h1>Accesorios Automotrices</h1>
+    <br>
+    <br>
+    <!-- Botones -->
+    <div class="botones text-center"> <!-- Agregamos la clase text-center -->
+      <a href="{% url 'luces' %}" class="btn btn-color">Luces</a>
+      <a href="{% url 'lip' %}" class="btn btn-color">Lip</a>
+      <a href="{% url 'pomo' %}" class="btn btn-color">Pomo</a>
+      <a href="{% url 'tapaValvula' %}" class="btn btn-color">Tapa Valvula</a>
+      <a href="{% url 'cubreCaliper' %}" class="btn btn-color">Cubre Caliper</a>
+      <a href="{% url 'capucha' %}" class="btn btn-color">Capucha</a>
+      <a href="{% url 'otros' %}" class="btn btn-color">Otros</a>
+    </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+  </div>
+</div>
+{% endblock %}

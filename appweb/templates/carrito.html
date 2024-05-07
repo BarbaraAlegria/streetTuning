@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito de Compras</title>
+  <style>
+    /* Estilos personalizados */
+    body {
+      background-color: #EAEDED;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    h1 {
+      color: #13AEB4;
+    }
+
+    .product {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #fff;
+    }
+
+    .product img {
+      max-width: 100px;
+      max-height: 100px;
+    }
+
+    .btn-remove {
+      color: #A00CBC;
+      cursor: pointer;
+    }
+
+    .btn-remove:hover {
+      color: #9C27B0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Carrito de Compras</h1>
+    <div id="cart-items">
+      <!-- Aquí se mostrarán los productos del carrito -->
+    </div>
+  </div>
+
+  <script>
+    let cartItems = []; // Lista de productos en el carrito
+
+    function renderCartItems() {
+      const cartContainer = document.getElementById("cart-items");
+      cartContainer.innerHTML = "";
+
+      cartItems.forEach((item) => {
+        const productHtml = `
+          <div class="product">
+            <div class="row">
+              <div class="col-md-3">
+                <img src="${item.image}" alt="${item.name}">
+              </div>
+              <div class="col-md-6">
+                <h3>${item.name}</h3>
+                <p>Precio: $${item.price}</p>
+                <p>Cantidad: ${item.quantity}</p>
+              </div>
+              <div class="col-md-3 text-end">
+                <button class="btn-remove" onclick="removeFromCart('${item.id}')"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        `;
+        cartContainer.innerHTML += productHtml;
+      });
+    }
+
+    function addToCart(product) {
+      cartItems.push(product);
+      renderCartItems(); // Renderizar de nuevo los productos del carrito
+    }
+
+    function removeFromCart(itemId) {
+      const index = cartItems.findIndex((item) => item.id === itemId);
+      if (index !== -1) {
+        cartItems.splice(index, 1);
+        renderCartItems(); // Renderizar de nuevo los productos del carrito
+      }
+    }
+
+    // Renderizar los productos del carrito al cargar la página
+    window.onload = renderCartItems;
+  </script>
+</body>
+</html>

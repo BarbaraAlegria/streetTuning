@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+
+{% block contenido %}
+
+<!--- Carrusel de imágenes -->
+      <div id="carouselExampleCaptions" class="carousel slide">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <a href="{% url 'pagAccesorios' %}"><img src="{% static './imagenes/pagAccesorios.png' %}" class="d-block w-100"
+                alt="..."></a>
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+          <div class="carousel-item">
+            <a href="{% url 'pagStickers' %}"><img src="{% static './imagenes/pagStickers.png' %}" class="d-block w-100"
+                alt="..."></a>
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+          <div class="carousel-item">
+            <a href="{% url 'pagTsurikawa' %}"><img src="{% static './imagenes/pagTsurikawa.png' %}" class="d-block w-100"
+                alt="..."></a>
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+<!-- Imagen de compra -->
+      <div>
+        <img src="{% static './imagenes/compra.png' %}" alt="Descripción de la imagen" class="img-fluid mb-4"
+          style="width: 100%; max-height: 400px;">
+      </div>
+
+<!-- Después del bloque de la imagen de compra -->
+        <button
+          style="display: block; width: 100%; height: 30px; margin: -25px 0 0 0; padding: 0; background-color: purple; border: none;">
+        </button>
+
+<br>
+<!-- Título encima de las imágenes -->
+        <h2 class="text-center mb-4">
+          Producto<span class="text-purple-underline">s</span> Destacados
+        </h2>
+
+
+
+<!-- Imágenes debajo de la franja -->
+        <div class="imagenes-bajo-franja row row-cols-1 row-cols-md-3 g-4">
+          <div class="col">
+              <div class="card">
+                  <img src="{% static './imagenes/tapaValvulaNegraMorado.png' %}" class="card-img-top img-thumbnail" alt="Imagen 1" style=" width: 700px; height: 500px;">
+              </div>
+          </div>
+          <div class="col">
+              <div class="card">
+                  <img src="{% static './imagenes/luzNeon.png' %}" class="card-img-top img-thumbnail" alt="Imagen 2" style=" width: 700px; height: 500px;">
+              </div>
+          </div>
+          <div class="col">
+              <div class="card">
+                  <img src="{% static './imagenes/instagram.png' %}" class="card-img-top img-thumbnail" alt="Imagen 3" style=" width: 700px; height: 500px;">
+              </div>
+          </div>
+        </div>
+
+
+<div class="row mt-3" id="menu">
+
+<!--- Misión -->
+  <div class="col-md-4 p-3">
+    <center>
+      <h4> MISIÓN </h4>
+
+      <p>
+        Brindar a nuestros clientes servicios de accesorios automotrices, stickers personalizados y tsurikawa de la más
+        alta calidad,
+        destacando por nuestra atención personalizada, creatividad y compromiso con la satisfacción total de quienes
+        confían en nosotros.
+        Nos esforzamos por superar las expectativas, ofreciendo soluciones innovadoras y duraderas que realcen la
+        experiencia automotriz de cada cliente
+      </p>
+    </center>
+  </div>
+
+<!--- Visión -->
+  <div class="col-md-4 p-3">
+    <form class="row">
+      <center>
+        <h4> VISIÓN </h4>
+
+        <p>
+          Aspiramos a ser líderes reconocidos en el mercado de accesorios automotrices, stickers personalizados y
+          tsurikawa,
+          destacando por nuestra excelencia en el servicio al cliente, creatividad y constante innovación.
+          Buscamos ser la primera opción para aquellos que buscan personalizar y mejorar sus vehículos,
+          construyendo relaciones duraderas basadas en la confianza y la calidad de nuestros productos y servicios.
+        </p>
+      </center>
+
+    </form>
+  </div>
+
+<!-- Contáctenos -->
+      <div class="col-md-4 p-3">
+        <h4>Contáctenos</h4>
+        <p>
+          Dirección: Vasco Nuñez De Balboa #0657, La Granja<br>
+          Fono: + 56 9 53431025 <br>
+          Horario de atención: Lunes a Viernes, de 10:00 a 21:00 <br>
+          E-mail: contacto@streettuning.cl
+        </p>
+      </div>
+</div>
+
+</body>
+
+</html>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tsurikawas</title>
+<!-- Se incluye  SweetAlert2 desde la CDN para realizar la alerta -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+    const addToCartButtons = document.querySelectorAll('.btn-agregar');
+        
+        addToCartButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const product = this.closest('.catalog-item');
+            const productId = product.dataset.productId;
+            const productName = product.querySelector('.catalog-item-title').textContent;
+            const productPrice = product.querySelector('.catalog-item-price').textContent;
+  
+            const cartItem = {
+              id: productId,
+              name: productName,
+              price: productPrice
+            };
+  
+            // Obtener el carrito de localStorage o inicializar uno vacío
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  
+            // Agregar el producto al carrito
+            cart.push(cartItem);
+  
+            // Guardar el carrito actualizado en localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+  
+            // Mostrar un mensaje emergente personalizado con SweetAlert2
+            Swal.fire({
+              icon: 'success',
+              title: 'Producto agregado al carrito',
+              showConfirmButton: false,
+              timer: 1500 // Duración del mensaje en milisegundos (1.5 segundos)
+            });
+          });
+        });
+      });
+    </script>
+</head>
+<!-- Contenido de la página de accesorios -->
+<div class="pag-accesorios">
+  <!-- Imagen principal -->
+  <div class="container-fluid">
+    <img src="{% static './imagenes/fabricado.png'%}" class="img-fluid" alt="...">
+  </div>
+
+  <!-- Contenido de la página -->
+  <div class="container">
+    <style>
+      /* Centra el título y le da color */
+      h1 {
+        text-align: center;
+        color: #13AEB4; /* Color azul */
+        margin-bottom: 20px; /* Agrega espacio debajo del título */
+      }
+
+      /* Define estilos para los botones */
+      .btn-color {
+        display: inline-block;
+        padding: 15px 30px; /* Aumenta el tamaño de los botones */
+        margin: 10px;
+        text-decoration: none;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px; /* Aumenta el tamaño del texto de los botones */
+        cursor: pointer;
+        background-color: #13AEB4; /* Color azul */
+        transition: background-color 0.3s; /* Transición suave al cambiar de color */
+      }
+
+      /* Cambia el color al pasar el mouse */
+      .btn-color:hover {
+        background-color: #A00CBC; /* Cambia a color morado al pasar el mouse */
+      }
+    </style>
+
+    <!-- Título -->
+    <br>
+    <br>
+    <h1>Stickers</h1>
+    <br>
+    <br>
+   <!-- Botones -->
+   <div class="botones text-center"> 
+    <a href="{% url 'fabricado' %}" class="btn btn-color">Fabricados</a>
+    <a href="{% url 'personalizado' %}" class="btn btn-color">Personalizados</a>
+  </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</div>
+{% endblock %}

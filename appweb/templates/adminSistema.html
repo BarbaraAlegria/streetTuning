@@ -1,0 +1,103 @@
+{% block contenido %}
+<style>
+    .admin-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200px;
+        height: 100%;
+        background-color: #872C99;
+        color: #fff;
+        padding-top: 20px;
+    }
+
+    .admin-menu {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .admin-menu li {
+        margin-bottom: 10px;
+    }
+
+    .admin-menu a {
+        display: block;
+        padding: 15px; 
+        color: #fff;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        font-size: 20px;
+    }
+
+    .admin-menu a:hover {
+        background-color: #555;
+    }
+
+    .admin-content {
+        margin-left: 220px; 
+        padding: 20px;
+    }
+
+    .admin-section {
+        margin-bottom: 30px;
+    }
+
+    .admin-section h2 {
+        font-size: 24px;
+        color: #A00CBC;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+    }
+
+    .admin-functions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .admin-button {
+        background-color: #13AEB4;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .admin-button:hover {
+        background-color: #0D98B6;
+    }
+
+    .admin-title {
+        text-align: center;
+        color: #0D98B6;
+        margin-bottom: 20px;
+        font-size: 28px; 
+    }
+
+    .company-message {
+        text-align: center;
+        font-style: italic;
+        color: #fff;
+        margin-bottom: 30px; 
+        font-size: 20px; 
+    }
+</style>
+
+<h1 class="admin-title">Panel de Administrador</h1>
+
+<p class="company-message">¡Bienvenido al Panel de Administrador de Compañía Street Tuning!</p>
+
+<div class="admin-sidebar">
+    <ul class="admin-menu">
+        <li><a href="{% url 'gestionUsuario' %}">Gestión de Usuarios</a></li>
+        <li><a href="{% url 'adminContenido' %}">Administración de Contenido</a></li>
+        <li><a href="#gestion-pedidos">Gestión de Pedidos</a></li>
+        <li><a href="{% url 'reporteria' %}">Reportes</a></li>
+        <li><a href="#configuracion-sistema">Configuración del Sistema</a></li>
+    </ul>
+</div>
+
+{% endblock %}
