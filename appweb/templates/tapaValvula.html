@@ -4,48 +4,50 @@
 {% block contenido %}
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accesorios Automotrices</title>
-<!-- Se incluye  SweetAlert2 desde la CDN para realizar la alerta -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-    const addToCartButtons = document.querySelectorAll('.btn-agregar');
-        
-        addToCartButtons.forEach(button => {
-          button.addEventListener('click', function() {
-            const product = this.closest('.catalog-item');
-            const productId = product.dataset.productId;
-            const productName = product.querySelector('.catalog-item-title').textContent;
-            const productPrice = product.querySelector('.catalog-item-price').textContent;
-  
-            const cartItem = {
-              id: productId,
-              name: productName,
-              price: productPrice
-            };
-  
-            // Obtener el carrito de localStorage o inicializar uno vacío
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  
-            // Agregar el producto al carrito
-            cart.push(cartItem);
-  
-            // Guardar el carrito actualizado en localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
-  
-            // Mostrar un mensaje emergente personalizado con SweetAlert2
-            Swal.fire({
-              icon: 'success',
-              title: 'Producto agregado al carrito',
-              showConfirmButton: false,
-              timer: 1500 // Duración del mensaje en milisegundos (1.5 segundos)
-            });
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accesorios Automotrices</title>
+  <!-- Se incluye  SweetAlert2 desde la CDN para realizar la alerta -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Incluir tu archivo CSS -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const addToCartButtons = document.querySelectorAll('.btn-agregar');
+
+      addToCartButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const product = this.closest('.catalog-item');
+          const productId = product.dataset.productId;
+          const productName = product.querySelector('.catalog-item-title').textContent;
+          const productPrice = product.querySelector('.catalog-item-price').textContent;
+
+          const cartItem = {
+            id: productId,
+            name: productName,
+            price: productPrice
+          };
+
+          // Obtener el carrito de localStorage o inicializar uno vacío
+          const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+          // Agregar el producto al carrito
+          cart.push(cartItem);
+
+          // Guardar el carrito actualizado en localStorage
+          localStorage.setItem('cart', JSON.stringify(cart));
+
+          // Mostrar un mensaje emergente personalizado con SweetAlert2
+          Swal.fire({
+            icon: 'success',
+            title: 'Producto agregado al carrito',
+            showConfirmButton: false,
+            timer: 1500 // Duración del mensaje en milisegundos (1.5 segundos)
           });
         });
       });
-    </script>
+    });
+  </script>
 </head>
 <!-- Contenido de la página de accesorios -->
 <div class="pag-accesorios">
@@ -56,61 +58,7 @@
 
   <!-- Contenido de la página -->
   <div class="container">
-    <style>
-      .pag-accesorios {
-        background-color: #EAEDED;
-      }
 
-      .pag-accesorios h1 {
-        color: #13AEB4;
-        text-align: center;
-      }
-
-      .catalog-item {
-        border: 2px solid #13AEB4;
-        border-radius: 10px;
-        padding: 10px;
-        margin-bottom: 20px;
-      }
-
-      .catalog-item img {
-        max-width: 100%;
-        height: 200px;
-        /* Altura deseada */
-        object-fit: cover;
-      }
-
-      .catalog-item-title {
-        text-align: center;
-        color: #A00CBC;
-        margin-top: 10px;
-      }
-
-      .catalog-item-price {
-        text-align: center;
-        font-weight: bold;
-      }
-
-      .add-to-cart {
-        display: block;
-        margin: 10px auto;
-        text-align: center;
-      }
-
-      .btn-agregar {
-        background-color: #13AEB4;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-
-      .btn:hover {
-        background-color: #0D98B6;
-      }
-    </style>
 
     <!-- Título -->
     <br>
@@ -122,256 +70,27 @@
 
     <div class="row">
 
+      {% for p in tapaValvula %}
+      <!--- Contenido se crea un for para que recorra los productos con categoria capucha -->
       <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="23">
-          <img src="{% static './imagenes/tapaValvulaCoronaPlateadaPerlaMorada.png' %}"
-            alt="tapaValvulaCoronaPlateadaPerlaMorada" class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Corona Plateada Perla Morada 4 Unidades</div>
-          <div class="catalog-item-price">$5000</div>
+        <div class="catalog-item text-center">
+          {% if p.foto %}
+          <img width="170" height="350" src="{{p.foto.url}}" class="img-responsive wp-post-image" alt="LuzDeSecuencia"
+            class="img-fluid">
+          {% else %}
+          <img width="270" height="350" src="" class="img-responsive wp-post-image" alt="LuzDeSecuencia"
+            class="img-fluid">
+          {% endif%}
+          <div class="catalog-item-title">{{p.nombre}}</div>
+          <div class="catalog-item-price">${{p.precio|floatformat:0}}</div>
           <div class="add-to-cart">
             <button class="btn-agregar">Agregar al Carrito</button>
           </div>
         </div>
       </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="24">
-          <img src="{% static './imagenes/tapaValvulaCoronaPlateadaPerlaRoja.png' %}"
-            alt="tapaValvulaCoronaPlateadaPerlaRoja" class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Corona Plateada Perla Roja 4 Unidades</div>
-          <div class="catalog-item-price">$5000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="25">
-          <img src="{% static './imagenes/tapaValvulaCoronaPlateadaPerlaRosada.png' %}"
-            alt="tapaValvulaCoronaPlateadaPerlaRosada" class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Corona Plateada Perla Rosada 4 Unidades</div>
-          <div class="catalog-item-price">$5000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="26">
-          <img src="{% static './imagenes/tapaValvulaCoronaDoradaPerlaPlateada.png' %}"
-            alt="tapaValvulaCoronaDoradaPerlaPlateada" class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Corona Dorada Perla Plateada 4 Unidades</div>
-          <div class="catalog-item-price">$12000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
+      {% endfor %}
 
     </div>
-
-    <br>
-    <br>
-
-    <div class="row">
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="27">
-          <img src="{% static './imagenes/tapaValvulaCoronaNegraPerlaMorada.png' %}"
-            alt="tapaValvulaCoronaNegraPerlaMorada" class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Corona Negra Perla Morada 4 Unidades</div>
-          <div class="catalog-item-price">$5000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="28">
-          <img src="{% static './imagenes/tapaValvulaCoronaNegraPerlaRoja.png' %}" alt="tapaValvulaCoronaNegraPerlaRoja"
-            class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Corona Negra Perla Roja 4 Unidades</div>
-          <div class="catalog-item-price">$5000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="29">
-          <img src="{% static './imagenes/tapaValvulaCoronaNegraPerlaRosada.png' %}"
-            alt="tapaValvulaCoronaNegraPerlaRosada" class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Corona Negra Perla Rosada 4 Unidades</div>
-          <div class="catalog-item-price">$5000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="30">
-          <img src="{% static './imagenes/tapaValvulaCoronaNegraPerlaPlateada.png' %}"
-            alt="tapaValvulaCoronaNegraPerlaPlateada" class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Corona Negra Perla Plateada 4 Unidades</div>
-          <div class="catalog-item-price">$5000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <br>
-    <br>
-
-    <div class="row">
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="31">
-          <img src="{% static './imagenes/tapaValvulaCoronaPerlaPlateada.png' %}" alt="tapaValvulaCoronaPerlaPlateada"
-            class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Corona Perla Plateada 4 Unidades</div>
-          <div class="catalog-item-price">$5000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="32">
-          <img src="{% static './imagenes/tapaValvulaCalaberaPlateada.png' %}" alt="tapaValvulaCalaberaPlateada"
-            class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Calabera Plateada 4 Unidades</div>
-          <div class="catalog-item-price">$5000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="33">
-          <img src="{% static './imagenes/tapaValvulaNormalTornasol.png' %}" alt="tapaValvulaNormalTornasol"
-            class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Normal Tornasol 4 Unidades</div>
-          <div class="catalog-item-price">$5000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="34">
-          <img src="{% static './imagenes/tapaValvulaNegra.png' %}" alt="tapaValvulaNegra" class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Normal Negra <br> 4 Unidades</div>
-          <div class="catalog-item-price">$4000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <br>
-    <br>
-
-    <div class="row">
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="35">
-          <img src="{% static './imagenes/tapaValvulaPuntaDorada.png' %}" alt="tapaValvulaPuntaDorada"
-            class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Punta Dorada 4 Unidades</div>
-          <div class="catalog-item-price">$3000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="36">
-          <img src="{% static './imagenes/tapaValvulaPuntaPlateada.png' %}" alt="tapaValvulaPuntaPlateada"
-            class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Punta Plateada 4 Unidades</div>
-          <div class="catalog-item-price">$3000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="37">
-          <img src="{% static './imagenes/tapaValvulaPuntaNegra.png' %}" alt="tapaValvulaPuntaNegra"
-            class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Punta Negra 4 Unidades</div>
-          <div class="catalog-item-price">$3000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="38">
-          <img src="{% static './imagenes/tapaValvulaPuntaAzul.png' %}" alt="tapaValvulaPuntaAzul" class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Punta Azul 4 Unidades</div>
-          <div class="catalog-item-price">$3000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <br>
-    <br>
-
-    <div class="row">
-
-      <div class="col-md-3" >
-        <div class="catalog-item text-center" data-product-id="39">
-          <img src="{% static './imagenes/tapaValvulaPuntaMorada.png' %}" alt="tapaValvulaPuntaMorada"
-            class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Punta Morada 4 Unidades</div>
-          <div class="catalog-item-price">$3000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="40">
-          <img src="{% static './imagenes/tapaValvulaPuntaRoja.png' %}" alt="tapaValvulaPuntaRoja"
-            class="img-fluid">
-          <div class="catalog-item-title">Tapa Valvula Punta Roja 4 Unidades</div>
-          <div class="catalog-item-price">$3000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <br>
-    <br>
-
-
-
   </div>
-</div>
 </div>
 {% endblock %}

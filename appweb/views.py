@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .forms import *
+from .models import *
 
 # Create your views here.
 def home(request):
@@ -16,8 +18,13 @@ def pagStickers(request):
     return render(request, "pagStickers.html")
 
 def pagTsurikawa(request):
+    tsurikawa = Producto.objects.filter(categoria__id_categoria='b71c5013-d436-4e2b-902d-690b822080dd')
+    data ={
+        'tsurikawa' : tsurikawa
+    }
+    
     # Lógica para la vista de tsurikawa
-    return render(request, "pagTsurikawa.html")
+    return render(request, "pagTsurikawa.html",data)
 
 def pagOpiniones(request):
     # Lógica para la vista de opiniones y/o sugerencias
@@ -45,32 +52,55 @@ def registro(request):
     return render(request, 'registro.html', {'form': form})
 
 def otros(request):
-    # Lógica para la vista de otros
-    return render(request, "otros.html")
+    otros = Producto.objects.filter(categoria__id_categoria='67de268a-218c-4bdb-a881-db47a68331ba')
+    data ={
+        'otros' : otros
+    }
+    return render(request, "otros.html",data)
 
 def luces(request):
-    # Lógica para la vista de luces
-    return render(request, "luces.html")
+    luces = Producto.objects.filter(categoria__id_categoria='82b3b0ea-da68-4f58-92f6-66638a08701d')
+    data ={
+        'luces' : luces
+    }
+    return render(request, 'luces.html', data)
+
+    
 
 def lip(request):
-    # Lógica para la vista de lip
-    return render(request, "lip.html")
+    lip = Producto.objects.filter(categoria__id_categoria='95b79381-966f-40bb-adc1-7434b5f020ea')
+    data ={
+        'lip' : lip
+    }
+    return render(request, "lip.html",data)
 
 def pomo(request):
-    # Lógica para la vista de pomo
-    return render(request, "pomo.html")
+    pomo = Producto.objects.filter(categoria__id_categoria='6b252979-fae6-431f-b2c8-055d7f203aa0')
+    data ={
+        'pomo' : pomo
+    }
+    return render(request, "pomo.html",data)
 
 def tapaValvula(request):
-    # Lógica para la vista de tapaValvula
-    return render(request, "tapaValvula.html")
+    tapaValvula = Producto.objects.filter(categoria__id_categoria='080ceb12-048c-4dff-9543-9b6d36708939')
+    data ={
+        'tapaValvula' : tapaValvula
+    }
+    return render(request, "tapaValvula.html",data)
 
 def cubreCaliper(request):
-    # Lógica para la vista de cubreCaliper
-    return render(request, "cubreCaliper.html")
+    cubreCaliper = Producto.objects.filter(categoria__id_categoria='09c00024-2c9c-484c-a06c-3558c40ca152')
+    data ={
+        'cubreCaliper' : cubreCaliper
+    }
+    return render(request, "cubreCaliper.html",data)
 
 def capucha(request):
-    # Lógica para la vista de capucha
-    return render(request, "capucha.html")
+    capucha = Producto.objects.filter(categoria__id_categoria='3b9be3c4-a5ff-48e2-9c6e-f2b8df4861be')
+    data ={
+        'capucha' : capucha
+    }
+    return render(request, "capucha.html",data)
 
 def carrito(request):
     # Lógica para la vista de carrito
@@ -81,8 +111,20 @@ def fabricado(request):
     return render(request, "fabricado.html")
 
 def personalizado(request):
-    # Lógica para la vista de personalizado
-    return render(request, "personalizado.html")
+    data= {
+        'form' : PersonalizadoForm,
+        'mensaje' :""
+    }
+    if request.method =="POST":
+        formulario= PersonalizadoForm(data=request.POST, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            data['mensaje'] = "Presonalización Enviada"
+        else:
+            data['form'] = formulario
+            data['mensaje'] = "Ocurrio un error"
+            
+    return render(request, "personalizado.html",data)
 
 def adminSistema(request):
     # Lógica para la vista de adminSistema
@@ -100,6 +142,10 @@ def gestionUsuario(request):
 def adminContenido(request):
     # Lógica para la vista de adminContenido de la pantalla del administrador
     return render(request, "adminContenido.html")
+
+
+
+
 
 
 
