@@ -1,9 +1,15 @@
-from django.shortcuts import render, redirect
+import logging
+from pyexpat.errors import messages
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+
+
 from .forms import *
 from .models import *
+logger = logging.getLogger(__name__)
+msgFormNotValid="Formulario no valido"
 
 # Create your views here.
 def home(request):
@@ -31,25 +37,58 @@ def pagOpiniones(request):
     return render(request, "pagOpiniones.html")
        
 def login(request):
-    # Lógica para el inicio de sesión
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')  
-    return render(request, 'login.html')
+    print("Bienvenido "+ request.user.username)
+
+
+    print("Grupos", request.user.groups.all())
+
+    if request.user.groups.filter(name='user'):
+        print("Es un user")
+
+    return redirect(to='home')
+
 
 def registro(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')  # Redirige al usuario a la página de inicio de sesión después del registro
-    else:
-        form = UserCreationForm()
-    return render(request, 'registro.html', {'form': form})
+    data = {
+        "mensaje": ""
+    }
+    if request.POST:
+        nombre = request.POST.get("nombre")
+        apellido = request.POST.get("apellido")
+        correo = request.POST.get("correo")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
+        if password1 != password2:
+            data["mensaje"] = "Las contraseñas deben ser iguales"
+        else:
+            usu = User()
+            usu.set_password(password1)
+            usu.email = correo
+            usu.username = nombre
+            usu.first_name = nombre
+            usu.last_name = apellido
+            grupo = Group.objects.get(name='user')
+            try:
+                usu.save()
+                usu.groups.add(grupo)
+                data["mensaje"] = "Usuario creado"
+                user = authenticate(username=usu.username, password=password1)
+                login(request, user)
+                return redirect(to='home')
+            except:
+                messages.error(request, msgFormNotValid)
+    return render(request, "registration/registro.html", data)
+
+
+
+
+
+
+
+
+
+
+
 
 def otros(request):
     otros = Producto.objects.filter(categoria__id_categoria='67de268a-218c-4bdb-a881-db47a68331ba')
@@ -145,7 +184,59 @@ def adminContenido(request):
 
 
 
+################# mantenedor productos ##############
+def listar_Productos(request):
+    productos = Producto.objects.all()
+    data = {
+        "productos" : productos
+    }
+    return render(request, "Mantenedor/Productos/listar.html", data)
+
+def agregar_producto (request):
+    data= {
+        'form': ProductForm,
+        'mensaje':""
+    }
+    if request.method == "POST":
+        formulario = ProductForm(data=request.POST, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "Producto Agregago con Exito")
+            return redirect(to="listar_Productos")
+        else:
+            messages.error(request, msgFormNotValid)
+            data["form"] = formulario
+    
+    return render(request, "mantenedor/Produtos/agregar.html", data)
+
+
+def eliminar_producto(request, id_producto):
+    producto = get_object_or_404(Producto, id_producto=id_producto)
+    producto.delete()
+    messages.success(request, "El profesional rut: "+ id_producto + " fue eliminado correctamente")
+    return redirect(to="listar_Productos")
+
+def modificar_producto(request,id_producto):
+
+    producto = get_object_or_404(Producto, id_producto=id_producto)
+
+    data = {
+        "form": ProductForm(instance=producto)
+    }
+    if request.method == 'POST':
+        formulario = ProductForm(data=request.POST, files=request.FILES, instance=producto)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "La Producto se ha modificado con exito")
+            return redirect(to="listar_Productos")
+        else:
+            messages.error(request, msgFormNotValid)
+            data["form"] =  formulario
+    return render(request, "mantenedor/Produtos/modificar.html",data)
 
 
 
-
+#Tareas del administrador 
+def pagAdmin(request):
+    # Lógica para la vista de carrito
+    return render(request, "pagAdmin.html")

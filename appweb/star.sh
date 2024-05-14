@@ -7,6 +7,6 @@ comandos
 para mac
 python3 manage.py runserver
 Python3 manage.py makemigrations     paso 1 para migrar las tablas
-Python3 manage.py migrate     paso2
+Python3 manage.py migrate     paso 2 para migrar las tablas 
 
 Pip install -r requirements.txt

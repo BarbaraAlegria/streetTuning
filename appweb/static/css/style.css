@@ -449,3 +449,175 @@
   .btn:hover {
     background-color: #0D98B6;
   }
+
+
+/* Estilos específicos para la página de agregar aproductos */
+
+
+  body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+.container {
+    max-width: 800px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 50px auto;
+}
+.logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+h1 {
+    font-family: 'Arial', sans-serif;
+    color: #16F2FA;
+    margin-bottom: 30px;
+    text-align: center; /* Centrar el título */
+}
+.btn-primary {
+    background-color: #16F2FA;
+    border-color: #16F2FA;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.btn-primary:hover {
+    background-color: #11bcd8;
+    border-color: #11bcd8;
+}
+.modal-content {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.modal-header {
+    border-bottom: none;
+}
+.modal-title {
+    color: #333;
+    font-weight: bold;
+    text-align: left;
+}
+.modal-body input[type="text"],
+.modal-body textarea {
+    border-radius: 5px;
+    text-align: center;
+    margin: auto;
+    display: block;
+    width: 80%;
+    margin-bottom: 10px;
+}
+.modal-body select {
+    border-radius: 5px;
+    text-align-last: center;
+    margin: auto;
+    display: block;
+    width: 80%;
+    margin-bottom: 10px;
+}
+
+
+
+
+/* Estilos generales */
+.opinions-feedback-body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #EAEDED;
+}
+
+.opinions-feedback-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Estilos del encabezado */
+.opinions-feedback-header {
+  background-color: #13AEB4;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* Estilos del contenido principal */
+.opinions-feedback-main {
+  padding: 20px 0;
+}
+
+.opinions-feedback-feedback {
+  margin-bottom: 40px;
+}
+
+.opinions-feedback-feedback h2 {
+  color: #13AEB4;
+}
+
+.opinions-feedback-feedback form {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.opinions-feedback-feedback label {
+  margin-bottom: 5px;
+}
+
+.opinions-feedback-feedback input,
+.opinions-feedback-feedback textarea {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.opinions-feedback-feedback .submit-feedback-btn {
+  background-color: #13AEB4;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.opinions-feedback-feedback .submit-feedback-btn:hover {
+  background-color: #0D98B6;
+}
+
+.opinions-feedback-comments {
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+}
+
+.opinions-feedback-comments h2 {
+  color: #13AEB4;
+}
+
+.opinions-feedback-comment {
+  margin-bottom: 20px;
+}
+
+.opinions-feedback-comment p {
+  margin: 0;
+}
+
+/* Estilos para las estrellas de calificación */
+.star-rating input[type="radio"] {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 30px;
+  color: #FFD700;
+  cursor: pointer;
+}
+
+.star-rating input[type="radio"]:checked ~ label:before {
+  content: '\2605'; /* Código Unicode para una estrella */
+}

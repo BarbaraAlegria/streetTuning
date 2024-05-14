@@ -9,8 +9,7 @@
   <title>Accesorios Automotrices</title>
   <!-- Se incluye  SweetAlert2 desde la CDN para realizar la alerta -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Incluir tu archivo CSS -->
-  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+ 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const addToCartButtons = document.querySelectorAll('.btn-agregar');
@@ -58,6 +57,62 @@
 
   <!-- Contenido de la página -->
   <div class="container">
+    <style>
+      .pag-accesorios {
+        background-color: #EAEDED;
+      }
+
+      .pag-accesorios h1 {
+        color: #13AEB4;
+        text-align: center;
+      }
+
+      .catalog-item {
+        border: 2px solid #13AEB4;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      .catalog-item img {
+        max-width: 100%;
+        height: 200px;
+        /* Altura deseada */
+        object-fit: cover;
+      }
+
+      .catalog-item-title {
+        text-align: center;
+        color: #A00CBC;
+        margin-top: 10px;
+      }
+
+      .catalog-item-price {
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .add-to-cart {
+        display: block;
+        margin: 10px auto;
+        text-align: center;
+      }
+
+      .btn-agregar {
+        background-color: #13AEB4;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #0D98B6;
+      }
+    </style>
+    
 
 
     <!-- Título -->

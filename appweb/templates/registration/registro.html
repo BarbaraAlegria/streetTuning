@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('#contacto').addEventListener('submit', function (event) {
+            event.preventDefault();
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Registro Exitoso',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(function () {
+                event.target.submit();
+            });
+        });
+    });
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+    <style>
+        /* Estilos específicos para la página de registro */
+        .registro-container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .registro-form {
+            margin-bottom: 20px;
+        }
+
+        .registro-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .registro-form input[type="text"],
+        .registro-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .registro-form button[type="submit"] {
+            background-color: #13AEB4;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .registro-form button[type="submit"]:hover {
+            background-color: #0D98B6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="registro-container">
+            <h2>Registrarse</h2>
+            <div class="card-body">
+                {{mensaje}}
+                <form class="registro-form" id="loginForm" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" class="form-control" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Apellido:</label>
+                        <input type="text" class="form-control" name="apellido" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre">Correo:</label>
+                        <input type="text" class="form-control" name="correo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre">Password:</label>
+                        <input type="password" class="form-control" name="password1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre">Repita su Password:</label>
+                        <input type="password" class="form-control" name="password2" required>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" style="width: 100%">Registrar</button>
+                    </div>
+                </form>
+                <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+            </div>
+        </div>
+</body>
+
+{% endblock %}

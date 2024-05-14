@@ -8,3 +8,9 @@ class PersonalizadoForm(forms.ModelForm):
     class Meta:
         model= Personalizado
         fields = "__all__"
+
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model= Producto
+        fields = "__all__"
