@@ -47,7 +47,7 @@
     <tbody>
         {% for p in productos %}
       <tr>
-        <th scope="row">{{p.rut}}</th>
+        <th scope="row">{{p.id_producto}}</th>
         <td>{{p.nombre}}</td>
         <td>{{p.cantidad}}</td>
         <td>{{p.precio}}</td>
@@ -74,7 +74,7 @@
     </tbody>
   </table>
   <br>
-  <br>
   <a class="btn btn-secondary btn" href="{% url 'pagAdmin'%}" role="button">Volver</a>
 </div>
+<br>
   {% endblock %}

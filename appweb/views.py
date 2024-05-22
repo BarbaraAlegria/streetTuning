@@ -4,6 +4,11 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
+from django.contrib import messages
+
+from django.http import HttpResponse, HttpResponseRedirect
+
+
 
 
 from .forms import *
@@ -80,16 +85,6 @@ def registro(request):
     return render(request, "registration/registro.html", data)
 
 
-
-
-
-
-
-
-
-
-
-
 def otros(request):
     otros = Producto.objects.filter(categoria__id_categoria='67de268a-218c-4bdb-a881-db47a68331ba')
     data ={
@@ -141,9 +136,7 @@ def capucha(request):
     }
     return render(request, "capucha.html",data)
 
-def carrito(request):
-    # Lógica para la vista de carrito
-    return render(request, "carrito.html")
+
 
 def fabricado(request):
     # Lógica para la vista de fabricado
@@ -192,28 +185,27 @@ def listar_Productos(request):
     }
     return render(request, "Mantenedor/Productos/listar.html", data)
 
-def agregar_producto (request):
-    data= {
-        'form': ProductForm,
-        'mensaje':""
-    }
+def agregar_producto(request):
     if request.method == "POST":
         formulario = ProductForm(data=request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            messages.success(request, "Producto Agregago con Exito")
+            messages.success(request, "Producto agregado con éxito")
             return redirect(to="listar_Productos")
         else:
-            messages.error(request, msgFormNotValid)
-            data["form"] = formulario
+            messages.error(request, "Error al agregar el producto. Por favor, revise el formulario.")
+
+    data = {
+        'form': ProductForm()
+    }
     
-    return render(request, "mantenedor/Produtos/agregar.html", data)
+    return render(request, "mantenedor/Productos/agregar.html", data)
+
 
 
 def eliminar_producto(request, id_producto):
     producto = get_object_or_404(Producto, id_producto=id_producto)
     producto.delete()
-    messages.success(request, "El profesional rut: "+ id_producto + " fue eliminado correctamente")
     return redirect(to="listar_Productos")
 
 def modificar_producto(request,id_producto):
@@ -227,12 +219,12 @@ def modificar_producto(request,id_producto):
         formulario = ProductForm(data=request.POST, files=request.FILES, instance=producto)
         if formulario.is_valid():
             formulario.save()
-            messages.success(request, "La Producto se ha modificado con exito")
+            messages.success(request, "El Producto se ha modificado con exito")
             return redirect(to="listar_Productos")
         else:
             messages.error(request, msgFormNotValid)
             data["form"] =  formulario
-    return render(request, "mantenedor/Produtos/modificar.html",data)
+    return render(request, "mantenedor/Productos/modificar.html",data)
 
 
 
@@ -240,3 +232,29 @@ def modificar_producto(request,id_producto):
 def pagAdmin(request):
     # Lógica para la vista de carrito
     return render(request, "pagAdmin.html")
+
+
+
+
+#*************CARRITO DE COMPRA************
+
+def carrito(request):
+    # Lógica para la vista de carrito
+    return render(request, "carrito.html")
+def checkout(request):
+      context = {}
+      return render(request, 'checkout.html', context)
+
+
+
+#**************busqueda por categoria******
+
+
+def busquedaproducto(request):
+    text = request.GET.get('search_text', '')
+    categoria=Categoria.objects.filter(nombre=text).last()                            
+    data = {
+        "categoria" : categoria
+    }
+
+    return render(request, "resultado_Busqueda.html", data)

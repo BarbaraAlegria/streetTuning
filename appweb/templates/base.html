@@ -14,25 +14,28 @@
     integrity="sha384-biQlFBE5Q6tK9cQe6ikf7b6dFkc0WuHx2PIbVTaVh4PPtrQEhLZz9BXDY9S6kk2m" crossorigin="anonymous">
     </script>
 
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
   <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
   <script src="{% static 'js/jquery.rut.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+
   <title>Principal</title>
 
   <style>
     /* Estilos del footer */
     .opinions-feedback-footer {
-        background-color: #13AEB4;
-        color: #fff;
-        padding: 10px 0;
-        text-align: center;
+      background-color: #13AEB4;
+      color: #fff;
+      padding: 10px 0;
+      text-align: center;
     }
-</style>
+  </style>
 
 </head>
 
@@ -42,13 +45,13 @@
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <a href="{% url 'home' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-<!--logo tienda-->
+          <!--logo tienda-->
           <img src="{% static 'imagenes/logotienda.png' %}" class="bi me-2" width="100" height="100" />
         </a>
 
 
 
-<!-- Paginas de navegación -->
+        <!-- Paginas de navegación -->
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 
 
@@ -56,36 +59,39 @@
           <li><a href="{% url 'pagAccesorios' %}" class="nav-link px-2 text-white">Accesorios</a></li>
           <li><a href="{% url 'pagStickers' %}" class="nav-link px-2 text-white">Stickers</a></li>
           <li><a href="{% url 'pagTsurikawa' %}" class="nav-link px-2 text-white">Tsurikawa</a></li>
-          <li><a href="{% url 'pagOpiniones' %}" class="nav-link px-2 text-white">Opiniones y/o sugerencias</a></li>
+          <li><a href="{% url 'pagOpiniones' %}" class="nav-link px-2 text-white">Sugerencias</a></li>
+          <li><a href="{% url 'pagAdmin' %}" class="nav-link px-2 text-white">Admin</a></li>
 
         </ul>
 
-<!-- buscar junto a botón -->
+        <!-- buscar junto a botón -->
         <form class="d-flex">
           <input id="buscador" name="buscador" class="form-control me-2" type="search" placeholder="Buscar"
             aria-label="Buscar">
-          <button class="btn btn-outline-success" type="submit">Buscar</button>
         </form>
 
-<!-- Iniciar sesión o registro -->
+        <!-- Iniciar sesión o registro -->
         <div class="mx-2">
           <ul class="navbar-nav">
             <li class="nav-item">
               {% if user.is_authenticated %}
-<!-- Si el usuario está autenticado, muestra un botón de cierre de sesión -->
+              <!-- Si el usuario está autenticado, muestra un botón de cierre de sesión -->
               <a href="{% url 'logout' %}" class="btn btn-outline-light me-2">Cerrar Sesión</a>
               <button type="button" class="btn btn-warning">Bienvenido {{user.username}}</button>
               {% else %}
-<!-- Si el usuario no está autenticado, muestra el icono de inicio de sesión o registro -->
+              <!-- Si el usuario no está autenticado, muestra el icono de inicio de sesión o registro -->
               <a href="{% url 'login' %}" class="btn btn-outline-light">Iniciar Sesión</a>
               {% endif %}
             </li>
           </ul>
         </div>
 
-<!-- Carrito de compras -->
-        <a href="{% url 'carrito' %}" class="btn btn-outline-light">
-          <i class="bi bi-cart3 text-white me-2"></i> 
+        <!-- Carrito de compras -->
+        <a href="{% url 'carrito' %}">
+          <img id="cart-icon" src="{% static 'imagenes/cart.png' %}">
+        </a>
+        <p id="cart-total">0</p>
+
         </a>
       </div>
     </div>
@@ -103,9 +109,9 @@
   <!-- FOOTER -->
   <footer class="footer opinions-feedback-footer">
     <div class="container">
-        <p>© 2024 Compañía Street Tuning. Todos los derechos reservados.</p>
+      <p>© 2024 Compañía Street Tuning. Todos los derechos reservados.</p>
     </div>
-</footer>
+  </footer>
 
   <div class="contenido">
     {% if messages %}
@@ -160,7 +166,7 @@
       return;
     }
     $.ajax({
-      url: "/busqueda_atenciones?search_text=" + search_text,
+      url: "/busqueda?search_text=" + search_text,
       type: "GET",
       dataType: "html",
       success: (data) => {

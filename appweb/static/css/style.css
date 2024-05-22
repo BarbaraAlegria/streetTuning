@@ -3,621 +3,102 @@
     text-decoration-color: purple;
     color: black;
 }
-.pag-accesorios {
-    background-color: #EAEDED;
-  }
-
-  .pag-accesorios h1 {
-    color: #13AEB4;
-    text-align: center;
-  }
-
-  .catalog-item {
-    border: 2px solid #13AEB4;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-
-  .catalog-item img {
-    max-width: 100%;
-    height: 200px;
-    /* Altura deseada */
-    object-fit: cover;
-  }
-
-  .catalog-item-title {
-    text-align: center;
-    color: #A00CBC;
-    margin-top: 10px;
-  }
-
-  .catalog-item-price {
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .add-to-cart {
-    display: block;
-    margin: 10px auto;
-    text-align: center;
-  }
-
-  .btn-agregar {
-    background-color: #13AEB4;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .btn:hover {
-    background-color: #0D98B6;
-  }
-   /* Estilos específicos para la página de stickers personalizados */
-   .custom-stickers-form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.custom-stickers-form h2 {
-    text-align: center;
-    color: #0D98B6;
-}
-
-.custom-stickers-form label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.custom-stickers-form input,
-.custom-stickers-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-.custom-stickers-form button {
-    background-color: #13AEB4;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.custom-stickers-form button:hover {
-    background-color: #0D98B6;
-}
-
-
- /* Estilos específicos para la página de stickers tapavalvula */
-
-
-.pag-accesorios {
-    background-color: #EAEDED;
-  }
-
-  .pag-accesorios h1 {
-    color: #13AEB4;
-    text-align: center;
-  }
-
-  .catalog-item {
-    border: 2px solid #13AEB4;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-
-  .catalog-item img {
-    max-width: 100%;
-    height: 200px;
-    /* Altura deseada */
-    object-fit: cover;
-  }
-
-  .catalog-item-title {
-    text-align: center;
-    color: #A00CBC;
-    margin-top: 10px;
-  }
-
-  .catalog-item-price {
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .add-to-cart {
-    display: block;
-    margin: 10px auto;
-    text-align: center;
-  }
-
-  .btn-agregar {
-    background-color: #13AEB4;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .btn:hover {
-    background-color: #0D98B6;
-  }
-
-
-
-
- /* Estilos específicos para la página de stickers cubrecapiler */
-
-  .pag-accesorios {
-    background-color: #EAEDED;
-  }
-
-  .pag-accesorios h1 {
-    color: #13AEB4;
-    text-align: center;
-  }
-
-  .catalog-item {
-    border: 2px solid #13AEB4;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-
-  .catalog-item img {
-    max-width: 100%;
-    height: 200px;
-    /* Altura deseada */
-    object-fit: cover;
-  }
-
-  .catalog-item-title {
-    text-align: center;
-    color: #A00CBC;
-    margin-top: 10px;
-  }
-
-  .catalog-item-price {
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .add-to-cart {
-    display: block;
-    margin: 10px auto;
-    text-align: center;
-  }
-
-  .btn-agregar {
-    background-color: #13AEB4;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .btn:hover {
-    background-color: #0D98B6;
-  }
-
-
-/* Estilos específicos para la página de lip */
-
-  .pag-accesorios {
-    background-color: #EAEDED;
-  }
-
-  .pag-accesorios h1 {
-    color: #13AEB4;
-    text-align: center;
-  }
-
-  .catalog-item {
-    border: 2px solid #13AEB4;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-
-  .catalog-item img {
-    max-width: 100%;
-    height: 200px;
-    /* Altura deseada */
-    object-fit: cover;
-  }
-
-  .catalog-item-title {
-    text-align: center;
-    color: #A00CBC;
-    margin-top: 10px;
-  }
-
-  .catalog-item-price {
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .add-to-cart {
-    display: block;
-    margin: 10px auto;
-    text-align: center;
-  }
-
-  .btn-agregar {
-    background-color: #13AEB4;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .btn:hover {
-    background-color: #0D98B6;
-  }
-
-
-
-  /* Estilos específicos para la página de luces */
-
-  .pag-accesorios {
-    background-color: #EAEDED;
-  }
-
-  .pag-accesorios h1 {
-    color: #13AEB4;
-    text-align: center;
-  }
-
-  .catalog-item {
-    border: 2px solid #13AEB4;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-
-  .catalog-item img {
-    max-width: 100%;
-    height: 200px;
-    /* Altura deseada */
-    object-fit: cover;
-  }
-
-  .catalog-item-title {
-    text-align: center;
-    color: #A00CBC;
-    margin-top: 10px;
-    text-decoration: none;
-  }
-
-  .catalog-item-price {
-    text-align: center;
-    color: #0c000e;
-    font-weight: bold;
-    text-decoration: none;
-  }
-
-  .add-to-cart {
-    display: block;
-    margin: 10px auto;
-    text-align: center;
-  }
-
-  .btn-agregar {
-    background-color: #13AEB4;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .btn:hover {
-    background-color: #0D98B6;
-  }
-
-
-/* Estilos específicos para la página de otros */
-
- 
-  .pag-accesorios {
-    background-color: #EAEDED;
-  }
-
-  .pag-accesorios h1 {
-    color: #13AEB4;
-    text-align: center;
-  }
-
-  .catalog-item {
-    border: 2px solid #13AEB4;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-
-  .catalog-item img {
-    max-width: 100%;
-    height: 200px;
-    /* Altura deseada */
-    object-fit: cover;
-  }
-
-  .catalog-item-title {
-    text-align: center;
-    color: #A00CBC;
-    margin-top: 10px;
-  }
-
-  .catalog-item-price {
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .add-to-cart {
-    display: block;
-    margin: 10px auto;
-    text-align: center;
-  }
-
-  .btn-agregar {
-    background-color: #13AEB4;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .btn:hover {
-    background-color: #0D98B6;
-  }
-
-
-/* Estilos específicos para la página de otros */
-
-
-  .pag-accesorios {
-    background-color: #EAEDED;
-  }
-
-  .pag-accesorios h1 {
-    color: #13AEB4;
-    text-align: center;
-  }
-
-  .catalog-item {
-    border: 2px solid #13AEB4;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-
-  .catalog-item img {
-    max-width: 100%;
-    height: 200px;
-    /* Altura deseada */
-    object-fit: cover;
-  }
-
-  .catalog-item-title {
-    text-align: center;
-    color: #A00CBC;
-    margin-top: 10px;
-  }
-
-  .catalog-item-price {
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .add-to-cart {
-    display: block;
-    margin: 10px auto;
-    text-align: center;
-  }
-
-  .btn-agregar {
-    background-color: #13AEB4;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .btn:hover {
-    background-color: #0D98B6;
-  }
-
-
-/* Estilos específicos para la página de agregar aproductos */
-
-
-  body {
-    background-color: #f8f9fa;
-    font-family: 'Arial', sans-serif;
-    color: #333;
-}
-.container {
-    max-width: 800px;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.carrito-container {
+    max-width: 1000px;
     margin: 50px auto;
-}
-.logo {
-    width: 100px;
-    height: auto;
-    margin-bottom: 20px;
-}
-h1 {
-    font-family: 'Arial', sans-serif;
-    color: #16F2FA;
-    margin-bottom: 30px;
-    text-align: center; /* Centrar el título */
-}
-.btn-primary {
-    background-color: #16F2FA;
-    border-color: #16F2FA;
-    font-weight: bold;
+    padding: 20px;
+    background-color: #fff;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-.btn-primary:hover {
-    background-color: #11bcd8;
-    border-color: #11bcd8;
-}
-.modal-content {
-    background-color: #f8f9fa;
-    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.modal-header {
-    border-bottom: none;
-}
-.modal-title {
-    color: #333;
-    font-weight: bold;
-    text-align: left;
-}
-.modal-body input[type="text"],
-.modal-body textarea {
+
+.check-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
     border-radius: 5px;
-    text-align: center;
-    margin: auto;
-    display: block;
-    width: 80%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+
+
+
+.product{
+	border-radius: 0 0 4px 4px;
+}
+
+.bg-dark{
+	background-color: #4f868c!important;
+}
+
+#cart-icon{
+	width:25px;
+	display: inline-block;
+	margin-left: 15px;
+}
+
+#cart-total{
+	display: block;
+	text-align: center;
+	color:#fff;
+	background-color: red;
+	width: 20px;
+	height: 25px;
+	border-radius: 50%;
+	font-size: 14px;
+}
+
+.col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{
+	margin-top: 10px;
+}
+
+
+
+.row-image{
+	width: 100px;
+}
+
+.form-field{
+	width:250px;
+	display: inline-block;
+	padding: 5px;
+}
+
+.cart-row{
+	display: flex;
+    align-items: flex-stretch;
+    padding-bottom: 10px;
     margin-bottom: 10px;
-}
-.modal-body select {
-    border-radius: 5px;
-    text-align-last: center;
-    margin: auto;
-    display: block;
-    width: 80%;
-    margin-bottom: 10px;
+    border-bottom: 1px solid #ececec;
+
 }
 
+.quantity{
+	display: inline-block;
+	font-weight: 700;
+	padding-right:10px;
+	
 
-
-
-/* Estilos generales */
-.opinions-feedback-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #EAEDED;
 }
 
-.opinions-feedback-container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 20px;
+.chg-quantity{
+	width: 12px;
+	cursor: pointer;
+	display: block;
+	margin-top: 5px;
+	transition:.1s;
 }
 
-/* Estilos del encabezado */
-.opinions-feedback-header {
-  background-color: #13AEB4;
-  color: #fff;
-  padding: 20px 0;
-  text-align: center;
+.chg-quantity:hover{
+	opacity: .6;
 }
 
-/* Estilos del contenido principal */
-.opinions-feedback-main {
-  padding: 20px 0;
-}
 
-.opinions-feedback-feedback {
-  margin-bottom: 40px;
-}
-
-.opinions-feedback-feedback h2 {
-  color: #13AEB4;
-}
-
-.opinions-feedback-feedback form {
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.opinions-feedback-feedback label {
-  margin-bottom: 5px;
-}
-
-.opinions-feedback-feedback input,
-.opinions-feedback-feedback textarea {
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.opinions-feedback-feedback .submit-feedback-btn {
-  background-color: #13AEB4;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.opinions-feedback-feedback .submit-feedback-btn:hover {
-  background-color: #0D98B6;
-}
-
-.opinions-feedback-comments {
-  border-top: 1px solid #ccc;
-  padding-top: 20px;
-}
-
-.opinions-feedback-comments h2 {
-  color: #13AEB4;
-}
-
-.opinions-feedback-comment {
-  margin-bottom: 20px;
-}
-
-.opinions-feedback-comment p {
-  margin: 0;
-}
-
-/* Estilos para las estrellas de calificación */
-.star-rating input[type="radio"] {
-  display: none;
-}
-
-.star-rating label {
-  font-size: 30px;
-  color: #FFD700;
-  cursor: pointer;
-}
-
-.star-rating input[type="radio"]:checked ~ label:before {
-  content: '\2605'; /* Código Unicode para una estrella */
+.hidden{
+	display: none!important;
 }
