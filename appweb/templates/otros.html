@@ -9,6 +9,7 @@
     <title>Accesorios Automotrices</title>
 <!-- Se incluye  SweetAlert2 desde la CDN para realizar la alerta -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
       document.addEventListener('DOMContentLoaded', function() {
     const addToCartButtons = document.querySelectorAll('.btn-agregar');
@@ -112,6 +113,7 @@
       }
     </style>
 
+
     <!-- Título -->
     <br>
     <br>
@@ -122,55 +124,27 @@
 
     <div class="row">
 
+      {% for p in otros %}
+      <!--- Contenido se crea un for para que recorra los productos con categoria capucha -->
       <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="50">
-          <img src="{% static './imagenes/PortaPatenteAzul.png' %}" alt="PortaPatenteAzul" class="img-fluid">
-          <div class="catalog-item-title">Porta Patente Azul</div>
-          <div class="catalog-item-price">$6000</div>
+        <div class="catalog-item text-center">
+          {% if p.foto %}
+          <img width="170" height="350" src="{{p.foto.url}}" class="img-responsive wp-post-image" alt="LuzDeSecuencia"
+            class="img-fluid">
+          {% else %}
+          <img width="270" height="350" src="" class="img-responsive wp-post-image" alt="LuzDeSecuencia"
+            class="img-fluid">
+          {% endif%}
+          <div class="catalog-item-title">{{p.nombre}}</div>
+          <div class="catalog-item-price">${{p.precio|floatformat:0}}</div>
           <div class="add-to-cart">
             <button class="btn-agregar">Agregar al Carrito</button>
           </div>
         </div>
       </div>
+      {% endfor %}
 
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="51">
-          <img src="{% static './imagenes/topePuertaNegro.png' %}" alt="topePuertaNegro" class="img-fluid">
-          <div class="catalog-item-title">Tope Puerta Negro</div>
-          <div class="catalog-item-price">$4000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="52">
-          <img src="{% static './imagenes/topePuertaGris.png' %}" alt="topePuertaGris" class="img-fluid">
-          <div class="catalog-item-title">Tope Puerta Gris</div>
-          <div class="catalog-item-price">$4000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="53">
-          <img src="{% static './imagenes/topePuertaRojo.png' %}" alt="topePuertaRojo" class="img-fluid">
-          <div class="catalog-item-title">Tope Puerta Rojo</div>
-          <div class="catalog-item-price">$4000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
     </div>
-
-    <br>
-    <br>
-
-  </div>
 </div>
 </div>
-{% endblock %}
+  {% endblock %}

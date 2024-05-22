@@ -9,6 +9,7 @@
     <title>Accesorios Automotrices</title>
 <!-- Se incluye  SweetAlert2 desde la CDN para realizar la alerta -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      
     <script>
       document.addEventListener('DOMContentLoaded', function() {
     const addToCartButtons = document.querySelectorAll('.btn-agregar');
@@ -111,6 +112,7 @@
         background-color: #0D98B6;
       }
     </style>
+  
 
     <!-- Título -->
     <br>
@@ -122,106 +124,27 @@
 
     <div class="row">
 
+      {% for p in pomo %}
+      <!--- Contenido se crea un for para que recorra los productos con categoria capucha -->
       <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="15">
-          <img src="{% static './imagenes/PomoVolante.png' %}" alt="PomoVolante" class="img-fluid">
-          <div class="catalog-item-title">Pomo Volante</div>
-          <div class="catalog-item-price">$4000</div>
+        <div class="catalog-item text-center">
+          {% if p.foto %}
+          <img width="170" height="350" src="{{p.foto.url}}" class="img-responsive wp-post-image" alt="LuzDeSecuencia"
+            class="img-fluid">
+          {% else %}
+          <img width="270" height="350" src="" class="img-responsive wp-post-image" alt="LuzDeSecuencia"
+            class="img-fluid">
+          {% endif%}
+          <div class="catalog-item-title">{{p.nombre}}</div>
+          <div class="catalog-item-price">${{p.precio|floatformat:0}}</div>
           <div class="add-to-cart">
             <button class="btn-agregar">Agregar al Carrito</button>
           </div>
         </div>
       </div>
+      {% endfor %}
 
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="16">
-          <img src="{% static './imagenes/PomoPlateado.png' %}" alt="PomoPlateado" class="img-fluid">
-          <div class="catalog-item-title">Pomo Plateado</div>
-          <div class="catalog-item-price">$8000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="17">
-          <img src="{% static './imagenes/PomoMorado.png' %}" alt="PomoMorado" class="img-fluid">
-          <div class="catalog-item-title">Pomo Morado</div>
-          <div class="catalog-item-price">$8000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="catalog-item text-center" data-product-id="18">
-          <img src="{% static './imagenes/PomoNegro.png' %}" alt="PomoNegro" class="img-fluid">
-          <div class="catalog-item-title">Pomo Negro</div>
-          <div class="catalog-item-price">$8000</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
-        </div>
-      </div>
     </div>
-
-    <br>
-    <br>
-
-    <div class="row">
-
-        <div class="col-md-3">
-          <div class="catalog-item text-center" data-product-id="19">
-            <img src="{% static './imagenes/PomoDorado.png' %}" alt="PomoDorado" class="img-fluid">
-            <div class="catalog-item-title">Pomo Dorado</div>
-            <div class="catalog-item-price">$8000</div>
-            <div class="add-to-cart">
-              <button class="btn-agregar">Agregar al Carrito</button>
-            </div>
-          </div>
-        </div>
-  
-        <div class="col-md-3">
-          <div class="catalog-item text-center" data-product-id="20">
-            <img src="{% static './imagenes/PomoAzul.png' %}" alt="PomoAzul" class="img-fluid">
-            <div class="catalog-item-title">Pomo Azul</div>
-            <div class="catalog-item-price">$8000</div>
-            <div class="add-to-cart">
-              <button class="btn-agregar">Agregar al Carrito</button>
-            </div>
-          </div>
-        </div>
-  
-        <div class="col-md-3">
-          <div class="catalog-item text-center" data-product-id="21">
-            <img src="{% static './imagenes/PomoRojo.png' %}" alt="PomoRojo" class="img-fluid">
-            <div class="catalog-item-title">Pomo Rojo</div>
-            <div class="catalog-item-price">$8000</div>
-            <div class="add-to-cart">
-              <button class="btn-agregar">Agregar al Carrito</button>
-            </div>
-          </div>
-        </div>
-  
-        <div class="col-md-3">
-          <div class="catalog-item text-center" data-product-id="22">
-            <img src="{% static './imagenes/PomoTornasol.png' %}" alt="PomoTornasol" class="img-fluid">
-            <div class="catalog-item-title">Pomo Tornasol</div>
-            <div class="catalog-item-price">$9000</div>
-            <div class="add-to-cart">
-              <button class="btn-agregar">Agregar al Carrito</button>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <br>
-      <br>
-
-
-  </div>
 </div>
 </div>
-{% endblock %}
+  {% endblock %}

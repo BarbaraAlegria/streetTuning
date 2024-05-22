@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
-from .views import home, pagAccesorios, pagStickers, pagTsurikawa, login, registro, pagOpiniones, otros, luces, lip, pomo, tapaValvula, cubreCaliper, capucha, carrito, fabricado, personalizado, adminSistema, reporteria, gestionUsuario, adminContenido
+from . import views 
+from .views import *
 urlpatterns = [
     path('home/', home, name="home"),
     path('', home, name="home"),
@@ -24,6 +24,25 @@ urlpatterns = [
     path('reporteria', reporteria, name='reporteria'),
     path('gestionUsuario', gestionUsuario, name='gestionUsuario'),
     path('adminContenido/', views.adminContenido, name='adminContenido'),
+    path('busqueda/',busquedaproducto,name="busqueda"),
+
+
+    path('Mantenedor/Productos/listar/', listar_Productos , name="listar_Productos"),
+    path('Mantenedor/Productos/agregar/', agregar_producto , name="agregar_producto"),
+    path('Mantenedor/Productos/modificar/<id_producto>/', modificar_producto , name="modificar_producto"),
+    path('eliminar_producto/<id_producto>/', eliminar_producto, name="eliminar_producto"),
+
+
+
+
+    path('pagAdmin', pagAdmin, name='pagAdmin'),
+
+
+
+    path('checkout', views.checkout, name="checkout"),
+    path('carrito',views.carrito, name='carrito'),
+    
+    
 
 
 ]

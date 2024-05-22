@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+
+<script>
+  function eliminarproducto(id_producto)
+  {
+    Swal.fire({
+      "title": "Advertencia",
+      "text": "¿Esta seguro que desea eliminar este producto?",
+      "icon": "question",
+      "showCancelButton": true,
+      "cancelButtonText": "No, cancelar",
+      "confirmButtonText":"Si, eliminar"
+    }).then(function(result){
+
+      if(result.isConfirmed)
+      {
+        window.location.href="/eliminar_producto/"+id_producto+"/";
+      }
+
+    })
+  }
+</script>
+
+<div class="container mt-5">
+    <div class="text-center">
+      <h2 class="mt-4">Lista de Productos</h2>  
+    </div>
+    <a href="{% url 'agregar_producto' %}" class="btn btn-primary btn-sm" >Agregar nuevo Producto </a>
+
+
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Categoria</th>
+        <th scope="col">Foto</th>
+        <th scope="col"> Opciones </th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for p in productos %}
+      <tr>
+        <th scope="row">{{p.id_producto}}</th>
+        <td>{{p.nombre}}</td>
+        <td>{{p.cantidad}}</td>
+        <td>{{p.precio}}</td>
+        <td>{{p.categoria}}</td>
+        <td>
+          {% if p.foto %}
+                <img width="70" height="70"
+                  src="{{p.foto.url}}"
+                  class="img-responsive wp-post-image" alt="" decoding="async" loading="lazy">
+                {% else %}
+                  <img width="270" height="350"
+                  src=""
+                  class="img-responsive wp-post-image" alt="" decoding="async" loading="lazy">
+                {% endif%}      
+        </td>
+        <td>
+          <a href="{% url 'modificar_producto' p.id_producto %}" class="btn btn-success btn-sm" >Modificar </a>
+          <a href="#" onclick="eliminarproducto('{{p.id_producto}}')" class="btn btn-danger btn-sm" >Eliminar </a>
+
+        </td>
+      </tr>
+      {% endfor %}
+      
+    </tbody>
+  </table>
+  <br>
+  <a class="btn btn-secondary btn" href="{% url 'pagAdmin'%}" role="button">Volver</a>
+</div>
+<br>
+  {% endblock %}
