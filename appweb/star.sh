@@ -10,3 +10,7 @@ Python3 manage.py makemigrations     paso 1 para migrar las tablas
 Python3 manage.py migrate     paso 2 para migrar las tablas 
 
 Pip install -r requirements.txt
+git add .  
+git status    
+git commit -m "se hace el fron de carrito "  
+git push origin feature/create_bdSqlite 
