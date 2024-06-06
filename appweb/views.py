@@ -1,3 +1,4 @@
+import json
 import logging
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, render, redirect
@@ -5,8 +6,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 
 
 
@@ -236,20 +238,135 @@ def pagAdmin(request):
 
 
 
-#*************CARRITO DE COMPRA************
-
 def carrito(request):
-    # Lógica para la vista de carrito
-    return render(request, "carrito.html")
+    if request.user.is_authenticated:
+        # Intenta obtener el cliente relacionado con el usuario autenticado
+        try:
+            cliente = Cliente.objects.get(usuario=request.user)
+            orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+            items = orden.ordenitem_set.all()
+        except Cliente.DoesNotExist:
+            # Si no existe un cliente para el usuario, maneja la situación (e.g., mostrar mensaje o crear perfil de cliente)
+            items = []
+            orden = {'get_carrito_total':0, 'get_carrito_items':0}
+            # Puedes elegir renderizar la misma página con un mensaje de error o manejar de otra forma
+    else:
+        items = []
+        orden = {'get_carrito_total':0, 'get_carrito_items':0}
+    
+    context = {'items': items, 'orden': orden}
+    return render(request, "carrito.html", context)
 def checkout(request):
-      context = {}
-      return render(request, 'checkout.html', context)
+      
+    if request.user.is_authenticated:
+        # Intenta obtener el cliente relacionado con el usuario autenticado
+        try:
+            cliente = Cliente.objects.get(usuario=request.user)
+            orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+            items = orden.ordenitem_set.all()
+        except Cliente.DoesNotExist:
+            # Si no existe un cliente para el usuario, maneja la situación (e.g., mostrar mensaje o crear perfil de cliente)
+            items = []
+            orden = {'get_carrito_total':0, 'get_carrito_items':0}
+            # Puedes elegir renderizar la misma página con un mensaje de error o manejar de otra forma
+    else:
+        items = []
+        orden = {'get_carrito_total':0, 'get_carrito_items':0}
+    
+    context = {'items': items, 'orden': orden}
+    return render(request, 'checkout.html', context)
 
+@csrf_exempt
+def update_cart(request):
+    data = json.loads(request.body)
+    product_id = data['productId']
+    action = data['action']
+
+    user = request.user
+    cliente, created = Cliente.objects.get_or_create(usuario=user)
+    producto = Producto.objects.get(id_producto=product_id)
+    orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+    orden_item, created = OrdenItem.objects.get_or_create(orden=orden, Producto=producto)
+
+    if action == 'add':
+        if orden_item.cantidadProducto < producto.cantidad:
+            orden_item.cantidadProducto += 1
+        else:
+            return JsonResponse({'status': 'error', 'message': 'No hay suficiente stock disponible.'}, safe=False)
+    elif action == 'remove':
+        orden_item.cantidadProducto -= 1
+
+    orden_item.save()
+
+    if orden_item.cantidadProducto <= 0:
+        orden_item.delete()
+
+    return JsonResponse({'status': 'success', 'cart_items': orden.get_carrito_items}, safe=False)
+
+
+@csrf_exempt
+def update_cart_quantity(request):
+    data = json.loads(request.body)
+    product_id = data['productId']
+    action = data['action']
+
+    user = request.user
+    cliente, created = Cliente.objects.get_or_create(usuario=user)
+    producto = Producto.objects.get(id_producto=product_id)
+    orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+    orden_item, created = OrdenItem.objects.get_or_create(orden=orden, Producto=producto)
+
+    if action == 'add':
+        if orden_item.cantidadProducto < producto.cantidad:
+            orden_item.cantidadProducto += 1
+        else:
+            return JsonResponse({'status': 'error', 'message': 'No hay suficiente stock disponible.'}, safe=False)
+    elif action == 'remove':
+        orden_item.cantidadProducto -= 1
+
+    orden_item.save()
+
+    if orden_item.cantidadProducto <= 0:
+        orden_item.delete()
+
+    return JsonResponse({'status': 'success', 'cart_items': orden.get_carrito_items}, safe=False)
+
+def base(request):
+    if request.user.is_authenticated:
+        try:
+            cliente = Cliente.objects.get(usuario=request.user)
+            orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+            items = orden.ordenitem_set.all()
+            carritoItems = orden.get_carrito_items
+        except Cliente.DoesNotExist:
+            items = []
+            orden = {'get_carrito_total':0, 'get_carrito_items':0}
+            carritoItems = orden['get_carrito_items']
+    else:
+        items = []
+        orden = {'get_carrito_total':0, 'get_carrito_items':0}
+        carritoItems = orden['get_carrito_items']
+    
+    context = {'items': items, 'orden': orden, 'carritoItems': carritoItems}
+    return render(request, 'base.html', context)
+
+def get_cart_items(request):
+    if request.user.is_authenticated:
+        try:
+            cliente = Cliente.objects.get(usuario=request.user)
+            orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+            cart_items = orden.get_carrito_items
+        except Cliente.DoesNotExist:
+            cart_items = 0
+    else:
+        cart_items = 0
+
+    return JsonResponse({'cart_items': cart_items}, safe=False)
 
 
 #**************busqueda por categoria******
 
-
+ 
 def busquedaproducto(request):
     text = request.GET.get('search_text', '')
     categoria=Categoria.objects.filter(nombre=text).last()                            

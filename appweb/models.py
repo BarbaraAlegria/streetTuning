@@ -7,7 +7,6 @@ class Cliente(models.Model):
     rut = models.CharField(max_length=10)
     nombre = models.CharField(max_length=80)
     apellido = models.CharField(max_length=80)
-    usuario = models.IntegerField()
     contraseña = models.BooleanField()
     direccion = models.CharField(max_length=80)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
@@ -28,7 +27,6 @@ class Producto(models.Model):
     cantidad = models.IntegerField()
     precio = models.IntegerField()
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-    
     foto = models.ImageField(upload_to="producto",null=True)
     def __str__(self):
         return f"{self.nombre} {self.precio} {self.id_producto}"
@@ -57,6 +55,20 @@ class Orden(models.Model):
     def __str__(self):
         return self.transaccion_id
     
+       
+    @property
+    def get_carrito_total(self):
+        ordenItems = self.ordenitem_set.all()
+        total= sum([item.get_total for item in ordenItems])
+        return total
+    
+    @property
+    def get_carrito_items(self):
+        ordenItems = self.ordenitem_set.all()
+        total= sum([item.cantidadProducto for item in ordenItems])
+        return total
+
+    
 class OrdenItem(models.Model):
     Producto=models.ForeignKey(Producto ,on_delete=models.CASCADE, blank=True, null=True)
     orden = models.ForeignKey(Orden ,on_delete=models.CASCADE, blank=True, null=True)
@@ -65,6 +77,12 @@ class OrdenItem(models.Model):
 
     def __str__(self):
         return str(self.id)
+    
+    @property
+    def get_total(self):
+        total = self.Producto.precio * self.cantidadProducto
+        return total
+    
 
 
 class DireccionEnvio(models.Model):

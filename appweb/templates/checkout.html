@@ -6,7 +6,7 @@
 
 <div class="container"> <!-- Asegúrate de tener un contenedor principal si es necesario -->
     <div class="row"> <!-- Esta fila contendrá ambas columnas -->
-        
+
         <!-- Primera columna para el formulario y la información del usuario -->
         <div class="col-lg-6">
             <div class="carrito-container">
@@ -20,7 +20,7 @@
                                 <input required class="form-control" type="email" name="email" placeholder="Email..">
                             </div>
                         </div>
-                        
+
                         <div id="shipping-info">
                             <hr>
                             <p>Información de envío:</p>
@@ -37,7 +37,7 @@
                             <div class="form-field">
                                 <input class="form-control" type="text" name="zipcode" placeholder="Código Postal..">
                             </div>
-                           
+
                         </div>
 
                         <hr>
@@ -49,7 +49,7 @@
                 <div class="box-element hidden" id="payment-info">
                     <small>Paypal Options</small>
                 </div>
-                
+
             </div>
         </div>
 
@@ -57,18 +57,26 @@
         <div class="col-lg-6">
             <div class="carrito-container">
                 <div class="box-element">
-                    <a  class="btn btn-outline-dark" href="{% url 'carrito' %}">&#x2190; volver al Carrito</a>
+                    <a class="btn btn-outline-dark" href="{% url 'carrito' %}">&#x2190; volver al Carrito</a>
                     <hr>
                     <h3>Resumen del Pedido</h3>
                     <hr>
+                    {% for item in items %}
                     <div class="cart-row">
-                        <div style="flex:2"><img class="row-image" src="{% static 'imagenes/capuchaMorada.png' %}"></div>
-                        <div style="flex:2"><p>Product 1</p></div>
-                        <div style="flex:1"><p>$20.00</p></div>
-                        <div style="flex:1"><p>x2</p></div>
+                        <div style="flex:2"><img class="row-image" src="{{item.Producto.foto.url}}"></div>
+                        <div style="flex:2">
+                            <p>{{item.Producto.nombre}}</p>
+                        </div>
+                        <div style="flex:1">
+                            <p>${{item.Producto.precio|floatformat:0}}</p>
+                        </div>
+                        <div style="flex:1">
+                            <p>x{{item.cantidadProducto}}</p>
+                        </div>
                     </div>
-                    <h5>Items:   2</h5>
-                    <h5>Total:   $40</h5>
+                    {% endfor %}
+                    <h5>Items: {{orden.get_carrito_items}}</h5>
+                    <h5>Total: ${{orden.get_carrito_total}}</h5>
                 </div>
             </div>
         </div>
