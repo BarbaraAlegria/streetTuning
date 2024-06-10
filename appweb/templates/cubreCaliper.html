@@ -6,47 +6,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accesorios Automotrices</title>
+  <title>Cubre Capiler</title>
   <!-- Se incluye  SweetAlert2 desde la CDN para realizar la alerta -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
- 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const addToCartButtons = document.querySelectorAll('.btn-agregar');
-
-      addToCartButtons.forEach(button => {
-        button.addEventListener('click', function () {
-          const product = this.closest('.catalog-item');
-          const productId = product.dataset.productId;
-          const productName = product.querySelector('.catalog-item-title').textContent;
-          const productPrice = product.querySelector('.catalog-item-price').textContent;
-
-          const cartItem = {
-            id: productId,
-            name: productName,
-            price: productPrice
-          };
-
-          // Obtener el carrito de localStorage o inicializar uno vacío
-          const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-          // Agregar el producto al carrito
-          cart.push(cartItem);
-
-          // Guardar el carrito actualizado en localStorage
-          localStorage.setItem('cart', JSON.stringify(cart));
-
-          // Mostrar un mensaje emergente personalizado con SweetAlert2
-          Swal.fire({
-            icon: 'success',
-            title: 'Producto agregado al carrito',
-            showConfirmButton: false,
-            timer: 1500 // Duración del mensaje en milisegundos (1.5 segundos)
-          });
-        });
-      });
-    });
-  </script>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <!-- Contenido de la página de accesorios -->
 <div class="pag-accesorios">
@@ -57,68 +20,10 @@
 
   <!-- Contenido de la página -->
   <div class="container">
-    <style>
-      .pag-accesorios {
-        background-color: #EAEDED;
-      }
-
-      .pag-accesorios h1 {
-        color: #13AEB4;
-        text-align: center;
-      }
-
-      .catalog-item {
-        border: 2px solid #13AEB4;
-        border-radius: 10px;
-        padding: 10px;
-        margin-bottom: 20px;
-      }
-
-      .catalog-item img {
-        max-width: 100%;
-        height: 200px;
-        /* Altura deseada */
-        object-fit: cover;
-      }
-
-      .catalog-item-title {
-        text-align: center;
-        color: #A00CBC;
-        margin-top: 10px;
-      }
-
-      .catalog-item-price {
-        text-align: center;
-        font-weight: bold;
-      }
-
-      .add-to-cart {
-        display: block;
-        margin: 10px auto;
-        text-align: center;
-      }
-
-      .btn-agregar {
-        background-color: #13AEB4;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-
-      .btn:hover {
-        background-color: #0D98B6;
-      }
-    </style>
-    
-
-
     <!-- Título -->
     <br>
     <br>
-    <h1>Accesorios Automotrices</h1>
+    <h1>Cubre Capiler</h1>
     <br>
     <br>
     <!-- Catálogo de imágenes -->
@@ -138,9 +43,9 @@
           {% endif%}
           <div class="catalog-item-title">{{p.nombre}}</div>
           <div class="catalog-item-price">${{p.precio|floatformat:0}}</div>
-          <div class="add-to-cart">
-            <button class="btn-agregar">Agregar al Carrito</button>
-          </div>
+          <button data-p="{{ p.id_producto }}" data-action="add" class="btn-agregar add-btn update-cart">
+            Agregar al Carrito
+        </button>
         </div>
       </div>
       {% endfor %}

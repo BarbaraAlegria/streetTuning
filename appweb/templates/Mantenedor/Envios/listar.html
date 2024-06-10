@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<script>
+    function entregado(id) {
+        Swal.fire({
+            title: 'Ingrese el nombre de quien recibe',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            cancelButtonText: "No",
+            confirmButtonText: "Entregado"
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                window.location.href = "/entrega_envio/" + id + "?recibidoPor=" + result.value;
+            }
+        });
+    }
+
+    function despachado(id) {
+        Swal.fire({
+            "title": "Advertencia",
+            "text": "¿Esta seguro que deseas despachar?",
+            "icon": "question",
+            "showCancelButton": true,
+            "cancelButtonText": "No",
+            "confirmButtonText": "Si"
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                window.location.href = "/despacho_envio/" + id + "/";
+            }
+        })
+    }
+</script>
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h2 class="mt-4">Envíos</h2>
+    </div>
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Cliente</th>
+                <th scope="col">Orden</th>
+                <th scope="col">Ciudad</th>
+                <th scope="col">Comuna</th>
+                <th scope="col">Direccion</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Recibido por</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in envios %}
+            <tr>
+                <td>{{ p.cliente }}</td>
+                <td>{{ p.orden }}</td>
+                <td>{{ p.ciudad }}</td>
+                <td>{{ p.comuna }}</td>
+                <td>{{ p.direccion }}</td>
+                <td>{{ p.fecha_agregado }}</td>
+                <td>{{ p.Estado }}</td>
+                <td>{{ p.recibido }}</td>
+                <td>
+                    {% if p.Estado != 'Entregado' %}
+                        {% if p.Estado != 'En Camino' %}
+                            <a href="#" onclick="despachado('{{ p.id }}')" class="btn btn-success btn-sm bi bi-truck "></a>
+                        {% endif %}
+                        <a href="#" onclick="entregado('{{ p.id }}')" class="btn btn-primary btn-sm bi bi-house "></a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a class="btn btn-secondary btn" href="{% url 'pagAdmin' %}" role="button">Volver</a>
+</div>
+<br>
+
+{% endblock %}

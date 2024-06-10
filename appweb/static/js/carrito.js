@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.status === 'error') {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Stock insuficiente',
+                    title: 'Ups Lo sentimos!',
                     text: data.message,
                     showConfirmButton: true,
                 });

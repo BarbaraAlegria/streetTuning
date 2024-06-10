@@ -1,151 +1,36 @@
 {% block contenido %}
+{% extends 'base.html' %}
+{% load static %}
 
-<style>
-    .report-module {
-        background-color: #f5f7fa;
-        color: #333;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
 
-    .report-title {
-        font-size: 24px;
-        margin-bottom: 20px;
-        color: #333;
-        text-align: center;
-    }
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Ventas</title>
+</head>
+<body>
+    <h1>Reporte de Ventas</h1>
 
-    .report-section {
-        margin-bottom: 20px;
-    }
+    <h2>Órdenes Completadas</h2>
+    <ul>
+        {% for orden in ordenes_completadas %}
+            <li>Orden ID: {{ orden.transaccion_id }}, Fecha: {{ orden.fecha_orden }}, Total: {{ orden.get_carrito_total }}</li>
+        {% endfor %}
+    </ul>
 
-    .report-section h2 {
-        font-size: 18px;
-        margin-bottom: 10px;
-        color: #0D98B6;
-    }
+    <h2>Ventas Totales</h2>
+    <p>{{ ventas_totales.total_ventas }}</p>
 
-    .report-details {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+    <h2>Productos Vendidos</h2>
+    <p>{{ productos_vendidos.total_productos_vendidos }}</p>
 
-    .report-details p {
-        margin: 0;
-    }
-
-    .chart-container {
-        margin-top: 20px;
-        text-align: center;
-    }
-
-    .bar-chart {
-        width: 100%;
-        max-width: 600px;
-        height: 300px;
-        margin: 0 auto;
-    }
-</style>
-
-<div class="report-module">
-    <h1 class="report-title">Módulo de Reportes</h1>
-
-    <div class="year-selector">
-        <label for="year-select">Seleccione el año:</label>
-        <select id="year-select">
-            <option value="2022">2022</option>
-            <option value="2023">2023</option>
-            <option value="2024">2024</option>
-            <!-- Agrega más opciones según sea necesario -->
-        </select>
-    </div>
-
-    <div class="report-section">
-        <h2>Ventas por Mes</h2>
-        <div class="report-details">
-            <p>Enero: $8,000</p>
-            <p>Febrero: $10,000</p>
-            <p>Marzo: $12,500</p>
-            <p>Abril: $15,200</p>
-        </div>
-        <div class="chart-container">
-            <canvas id="ventas-por-mes-chart" class="bar-chart"></canvas>
-        </div>
-    </div>
-
-    <div class="report-section">
-        <h2>Productos más Vendidos</h2>
-        <div class="report-details">
-            <p>Producto A: 150 unidades</p>
-            <p>Producto B: 120 unidades</p>
-            <p>Producto C: 100 unidades</p>
-        </div>
-        <div class="chart-container">
-            <canvas id="productos-mas-vendidos-chart" class="bar-chart"></canvas>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Datos de ventas por mes
-    var ventasPorMesData = {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        datasets: [{
-            label: 'Ventas por Mes',
-            backgroundColor: '#0D98B6',
-            borderColor: '#0D98B6',
-            data: [8000, 10000, 12500]
-        }]
-    };
-
-    var ventasPorMesChart = new Chart(document.getElementById('ventas-por-mes-chart'), {
-        type: 'bar',
-        data: ventasPorMesData,
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-
- // Datos de productos más vendidos
-    var productosMasVendidosData = {
-        labels: ['Producto A', 'Producto B', 'Producto C'],
-        datasets: [{
-            label: 'Productos más Vendidos',
-            backgroundColor: '#0D98B6',
-            borderColor: '#0D98B6',
-            data: [150, 120, 100]
-        }]
-    };
-
-    var productosMasVendidosChart = new Chart(document.getElementById('productos-mas-vendidos-chart'), {
-        type: 'bar',
-        data: productosMasVendidosData,
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-// Función para actualizar los datos de los gráficos cuando se cambia el año seleccionado
-    document.getElementById('year-select').addEventListener('change', function() {
-        var selectedYear = this.value;
-        // Aquí puedes implementar la lógica para obtener los datos actualizados para el año seleccionado desde la base de datos y actualizar los gráficos
-        // Por simplicidad, este ejemplo no incluye la actualización de datos dinámica
-    });
-</script>
+    <h2>Porcentajes de Categorías Vendidas</h2>
+    <ul>
+        {% for categoria in categorias_ventas %}
+            <li>{{ categoria.nombre }}: {{ categoria.porcentaje_vendido }}%</li>
+        {% endfor %}
+    </ul>
+</body>
 
 {% endblock %}

@@ -31,7 +31,25 @@ urlpatterns = [
     path('Mantenedor/Productos/agregar/', agregar_producto , name="agregar_producto"),
     path('Mantenedor/Productos/modificar/<id_producto>/', modificar_producto , name="modificar_producto"),
     path('eliminar_producto/<id_producto>/', eliminar_producto, name="eliminar_producto"),
-     path('base', base , name="base"),
+    path('base', base , name="base"),
+
+
+    path('Mantenedor/Opiniones/listar/', listar_opinion , name="listar_opinion"),
+    path('eliminar_opinion/<id>/', eliminar_opinion, name="eliminar_opinion"),
+
+
+    path('Mantenedor/personalizado/listar/', listar_personalizados , name="listar_personalizados"),
+    path('eliminar_personalizado/<id_personalizado>/', eliminar_personalizado, name="eliminar_personalizado"),
+
+    path('Mantenedor/Envios/listar/', listar_envios , name="listar_envios"),
+
+    path('despacho_envio/<id>/', despacho_envio, name="despacho_envio"),
+    path('entrega_envio/<id>/', entrega_envio, name="entrega_envio"),
+
+
+
+
+
 
 
 
@@ -45,8 +63,11 @@ urlpatterns = [
     path('update_cart/', views.update_cart, name='update_cart'),
     path('update_cart_quantity/', views.update_cart_quantity, name='update_cart_quantity'),
     path('get_cart_items/', views.get_cart_items, name='get_cart_items'),
+    path('checkout/', views.submit_shipping, name='submit_shipping'),
+    path('gestionUsuarios', gestionUsuarios, name="gestionUsuarios"),
     
     
+
 
 
 ]

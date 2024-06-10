@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accesorios Automotrices</title>
+    <!-- Se incluye  SweetAlert2 desde la CDN para realizar la alerta -->
+
+</head>
+<!-- Contenido de la página de accesorios -->
+<div class="pag-accesorios">
+    <!-- Imagen principal -->
+    <div class="container-fluid">
+        <img src="{% static './imagenes/principalAccesorios.png'%}" class="img-fluid" alt="...">
+    </div>
+
+    <!-- Contenido de la página -->
+    <div class="container">
+        <style>
+            .pag-accesorios {
+                background-color: #EAEDED;
+            }
+
+            .pag-accesorios h1 {
+                color: #13AEB4;
+                text-align: center;
+            }
+
+            .catalog-item {
+                border: 2px solid #13AEB4;
+                border-radius: 10px;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            .catalog-item img {
+                max-width: 100%;
+                height: 200px;
+                /* Altura deseada */
+                object-fit: cover;
+            }
+
+            .catalog-item-title {
+                text-align: center;
+                color: #A00CBC;
+                margin-top: 10px;
+            }
+
+            .catalog-item-price {
+                text-align: center;
+                font-weight: bold;
+            }
+
+            .add-to-cart {
+                display: block;
+                margin: 10px auto;
+                text-align: center;
+            }
+
+            .btn-agregar {
+                background-color: #13AEB4;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            .btn:hover {
+                background-color: #0D98B6;
+            }
+        </style>
+
+        <!-- Título -->
+        <br>
+        <br>
+        <h1>Gestión de Usuarios</h1>
+        <br>
+        <br>
+        <!-- Catálogo de imágenes -->
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="catalog-item text-center" data-product-id="41">
+                    <a href="{% url 'gestionUsuarios' %}">
+                        <img src="{% static './imagenes/868866.png' %}" alt="bremboAzul" class="img-fluid">
+                    </a>
+                    <div class="catalog-item-title">Usuarios</div>
+                    <div class="add-to-cart">
+                       
+                    </div>
+                </div>
+                <br>
+                <a class="btn btn-secondary btn" href="{% url 'pagAdmin' %}" role="button">Volver</a>
+                <br>
+                <br>
+            </div>
+           
+            <div class="col-md-4">
+                <div class="catalog-item text-center" data-product-id="41">
+                    <a href="{% url 'listar_opinion' %}">
+                        <img src="{% static './imagenes/image_preview.png' %}" alt="bremboAzul" class="img-fluid">
+                    </a>
+                    <div class="catalog-item-title">Sugerencias u opiniones </div>
+                    <div class="add-to-cart">
+                       
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-4">
+                <div class="catalog-item text-center" data-product-id="41">
+                    <a href="{% url 'listar_personalizados' %}">
+                        <img src="{% static './imagenes/9934575.png' %}" alt="bremboAzul" class="img-fluid">
+                    </a>
+                    <div class="catalog-item-title">personalizados</div>
+                    <div class="add-to-cart">
+                       
+                    </div>
+                </div>
+
+            </div>
+            
+            
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

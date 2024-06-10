@@ -8,6 +8,8 @@ class PorductoAdmin(admin.ModelAdmin):
     list_editable=['precio','cantidad']
     search_fields=['id_producto']
 
+class OrdenAdmin(admin.ModelAdmin):
+    list_display = ('cliente', 'fecha_orden', 'complete', 'transaccion_id')
 
 
 
@@ -16,6 +18,7 @@ admin.site.register(Cliente)
 admin.site.register(Categoria)
 admin.site.register(Producto,PorductoAdmin)
 admin.site.register(Personalizado)
-admin.site.register(Orden)
+admin.site.register(Orden, OrdenAdmin)
 admin.site.register(OrdenItem)
 admin.site.register(DireccionEnvio)
+admin.site.register(Opinion)

@@ -2,11 +2,14 @@ import json
 import logging
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
+
 
 from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 
@@ -29,6 +32,9 @@ def pagAccesorios(request):
 def pagStickers(request):
     # Lógica para la vista de stickers
     return render(request, "pagStickers.html")
+def gestionUsuarios(request):
+    # Lógica para la vista de stickers
+    return render(request, "gestionUsuarios.html")
 
 def pagTsurikawa(request):
     tsurikawa = Producto.objects.filter(categoria__id_categoria='b71c5013-d436-4e2b-902d-690b822080dd')
@@ -40,8 +46,19 @@ def pagTsurikawa(request):
     return render(request, "pagTsurikawa.html",data)
 
 def pagOpiniones(request):
-    # Lógica para la vista de opiniones y/o sugerencias
-    return render(request, "pagOpiniones.html")
+    data= {
+        'form' : OpinionForm,
+        'mensaje' :""
+    }
+    if request.method =="POST":
+        formulario= OpinionForm(data=request.POST, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            data['mensaje'] = "Presonalización Enviada"
+        else:
+            data['form'] = formulario
+            data['mensaje'] = "Ocurrio un error"
+    return render(request, "pagOpiniones.html",data)
        
 def login(request):
     print("Bienvenido "+ request.user.username)
@@ -49,42 +66,40 @@ def login(request):
 
     print("Grupos", request.user.groups.all())
 
-    if request.user.groups.filter(name='user'):
+    if request.user.groups.filter(name='user').exists():
         print("Es un user")
 
     return redirect(to='home')
 
 
 def registro(request):
-    data = {
-        "mensaje": ""
-    }
-    if request.POST:
-        nombre = request.POST.get("nombre")
-        apellido = request.POST.get("apellido")
-        correo = request.POST.get("correo")
-        password1 = request.POST.get("password1")
-        password2 = request.POST.get("password2")
-        if password1 != password2:
-            data["mensaje"] = "Las contraseñas deben ser iguales"
-        else:
-            usu = User()
-            usu.set_password(password1)
-            usu.email = correo
-            usu.username = nombre
-            usu.first_name = nombre
-            usu.last_name = apellido
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            usuario = form.save(commit=False)
+            password = form.cleaned_data['password1']
+            usuario.set_password(password)
+            usuario.save()
             grupo = Group.objects.get(name='user')
-            try:
-                usu.save()
-                usu.groups.add(grupo)
-                data["mensaje"] = "Usuario creado"
-                user = authenticate(username=usu.username, password=password1)
-                login(request, user)
-                return redirect(to='home')
-            except:
-                messages.error(request, msgFormNotValid)
-    return render(request, "registration/registro.html", data)
+            usuario.groups.add(grupo)
+            Cliente.objects.create(
+                usuario=usuario,
+                nombre=form.cleaned_data['first_name'],
+                apellido=form.cleaned_data['last_name'],
+                rut=form.cleaned_data.get('rut', '')  # Ajusta este campo según tus necesidades
+            )
+            # Autenticar y loguear al usuario
+            user = authenticate(username=usuario.username, password=password)
+            if user is not None:
+                auth_login(request, user)
+                return redirect('home')
+            else:
+                messages.error(request, "Hubo un error al autenticar el usuario.")
+        else:
+            messages.error(request, "Formulario inválido.")
+    else:
+        form = RegistroForm()
+    return render(request, 'registration/registro.html', {'form': form})
 
 
 def otros(request):
@@ -144,6 +159,13 @@ def fabricado(request):
     # Lógica para la vista de fabricado
     return render(request, "fabricado.html")
 
+def listar_personalizados(request):
+    personalizado = Personalizado.objects.all()
+    data = {
+        "personalizado" : personalizado
+    }
+    return render(request, "Mantenedor/personalizado/listar.html", data)
+
 def personalizado(request):
     data= {
         'form' : PersonalizadoForm,
@@ -159,6 +181,12 @@ def personalizado(request):
             data['mensaje'] = "Ocurrio un error"
             
     return render(request, "personalizado.html",data)
+
+def eliminar_personalizado(request, id_personalizado):
+    personalizado = get_object_or_404(Personalizado, id_personalizado=id_personalizado)
+    personalizado.delete()
+    return redirect(to="listar_personalizados")
+
 
 def adminSistema(request):
     # Lógica para la vista de adminSistema
@@ -176,7 +204,43 @@ def gestionUsuario(request):
 def adminContenido(request):
     # Lógica para la vista de adminContenido de la pantalla del administrador
     return render(request, "adminContenido.html")
+################# mantenedor envios ##############
+def listar_envios(request):
+    envios = DireccionEnvio.objects.all()
+    data = {
+        "envios" : envios
+    }
+    return render(request, "Mantenedor/Envios/listar.html", data)
+def despacho_envio(request, id):
+    envio = get_object_or_404(DireccionEnvio, id=id)
+    envio.Estado='En Camino'
+    envio.save()
+    messages.success(request, "Pedido en Ruta")
+    return redirect(to="listar_envios")
 
+def entrega_envio(request, id):
+    recibidoPor=request.GET.get('recibidoPor', '')
+    envio = get_object_or_404(DireccionEnvio, id=id)
+    envio.Estado='Entregado'
+    envio.recibido=recibidoPor
+
+    envio.save()
+    messages.success(request, "Envio Entregado")
+    return redirect(to="listar_envios")
+
+
+################# mantenedor ipiniones ##############
+def listar_opinion(request):
+    opinion = Opinion.objects.all()
+    data = {
+        "opinion" : opinion
+    }
+    return render(request, "Mantenedor/Opiniones/listar.html", data)
+
+def eliminar_opinion(request, id):
+    opinion = get_object_or_404(Opinion, id=id)
+    opinion.delete()
+    return redirect(to="listar_opinion")
 
 
 ################# mantenedor productos ##############
@@ -186,6 +250,7 @@ def listar_Productos(request):
         "productos" : productos
     }
     return render(request, "Mantenedor/Productos/listar.html", data)
+
 
 def agregar_producto(request):
     if request.method == "POST":
@@ -364,6 +429,60 @@ def get_cart_items(request):
     return JsonResponse({'cart_items': cart_items}, safe=False)
 
 
+
+def submit_shipping(request):
+    if request.method == 'POST':
+        address = request.POST['address']
+        city = request.POST['city']
+        comuna = request.POST['state']
+        codigo_postal = request.POST['zipcode']
+
+        # Validación básica
+        if not all([address, city, comuna, codigo_postal]):
+            return HttpResponse("Todos los campos son obligatorios.", status=400)
+
+        # Obtener el cliente y la orden asociados al usuario logueado
+        user = request.user
+        cliente = Cliente.objects.filter(usuario=user).first()
+        if not cliente:
+            return HttpResponse("Cliente no encontrado.", status=404)
+        
+        orden = Orden.objects.filter(cliente=cliente, complete=False).first()
+        if not orden:
+            return HttpResponse("Orden no encontrada.", status=404)
+
+        # Guardar la dirección de envío
+        DireccionEnvio.objects.create(
+            cliente=cliente,
+            orden=orden,
+            direccion=address,
+            ciudad=city,
+            comuna=comuna,
+            codigoPostal=codigo_postal
+        )
+
+        # Actualizar el stock de productos y completar la orden
+        orden_items = OrdenItem.objects.filter(orden=orden)
+        for item in orden_items:
+            producto = item.Producto
+            producto.cantidad -= item.cantidadProducto
+            if producto.cantidad < 0:
+                return HttpResponse(f"Stock insuficiente para el producto {producto.nombre}", status=400)
+            producto.save()
+
+        # Marcar la orden como completa
+        orden.complete = True
+        orden.save()
+
+        return render(request, 'checkout.html', {'message': "Tus productos están en preparación"})
+
+    # Obtener la información del usuario logueado
+    user = request.user
+    cliente = Cliente.objects.filter(usuario=user).first()
+
+    return render(request, 'checkout.html')  # Reemplaza con tu plantilla
+
+
 #**************busqueda por categoria******
 
  
@@ -375,3 +494,7 @@ def busquedaproducto(request):
     }
 
     return render(request, "resultado_Busqueda.html", data)
+
+
+
+

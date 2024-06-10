@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<script>
+  function eliminarpersonalizado(id_personalizado) {
+    Swal.fire({
+      "title": "Advertencia",
+      "text": "¿Está seguro que desea eliminar esto?",
+      "icon": "question",
+      "showCancelButton": true,
+      "cancelButtonText": "No, cancelar",
+      "confirmButtonText": "Sí, eliminar"
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location.href = "/eliminar_personalizado/" + id_personalizado + "/";
+      }
+    })
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var rows = document.querySelectorAll('tbody tr');
+    rows.forEach(function(row) {
+      var cantidad = parseInt(row.cells[2].innerText);
+      if (cantidad <= 5) {
+        row.classList.add('low-stock');
+      }
+    });
+  });
+</script>
+<style>
+  .low-stock td {
+    color: red !important;
+    font-weight: bold !important;
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="text-center">
+    <h2 class="mt-4">Personalizados</h2>
+  </div>
+ 
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Email</th>
+        <th scope="col">Telefono</th>
+        <th scope="col">Descrpción</th>
+        <th scope="col">Foto</th>
+        <th scope="col">Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in personalizado %}
+      <tr>
+        
+        <td>{{ p.id_personalizado}}</td>
+        <td>{{ p.nombre }}</td>
+        <td>{{ p.apellido }}</td>
+        <td><a href="mailto:{{ p.email }}">{{ p.email }}</a></td>
+        <td>{{ p.telefono }}</td>
+        <td>{{ p.descripcion }}</td>
+        <td>
+          {% if p.foto %}
+          <img width="70" height="70" src="{{ p.foto.url }}" class="img-responsive wp-post-image" alt="" decoding="async" loading="lazy">
+          {% else %}
+          <img width="270" height="350" src="" class="img-responsive wp-post-image" alt="" decoding="async" loading="lazy">
+          {% endif %}
+        </td>
+        <td>
+          
+          <a href="#" onclick="eliminarpersonalizado('{{ p.id_personalizado }}')" class="btn btn-danger btn-sm">Eliminar</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br>
+  <a class="btn btn-secondary btn" href="{% url 'gestionUsuarios' %}" role="button">Volver</a>
+</div>
+<br>
+
+{% endblock %}
