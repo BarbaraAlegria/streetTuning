@@ -9,15 +9,11 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
-
-
+from django.db.models import Sum, F
 from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
-
-
-
-
 from .forms import *
 from .models import *
+import csv
 logger = logging.getLogger(__name__)
 msgFormNotValid="Formulario no valido"
 
@@ -485,7 +481,6 @@ def submit_shipping(request):
 
 #**************busqueda por categoria******
 
- 
 def busquedaproducto(request):
     text = request.GET.get('search_text', '')
     categoria=Categoria.objects.filter(nombre=text).last()                            
@@ -498,3 +493,83 @@ def busquedaproducto(request):
 
 
 
+def mostrar_ventas(request):
+    ordenes_completadas = Orden.objects.filter(complete=True).prefetch_related('ordenitem_set__Producto')
+    lista_ordenes = []
+    total_general = 0  # Inicializa el total general
+     # Calcular ventas totales por categoría
+    ventas_por_categoria = Producto.objects.filter(
+        ordenitem__orden__complete=True
+    ).values('categoria__nombre').annotate(
+        total_vendido=Sum('ordenitem__cantidadProducto')
+    ).order_by('-total_vendido')
+
+    total_categorias = sum(item['total_vendido'] for item in ventas_por_categoria)
+
+    categorias_nombres = []
+    categorias_porcentajes = []
+    for categoria in ventas_por_categoria:
+        porcentaje = (categoria['total_vendido'] / total_categorias) * 100
+        categorias_nombres.append(categoria['categoria__nombre'])
+        categorias_porcentajes.append(round(porcentaje, 2))
+
+    for orden in ordenes_completadas:
+        total_orden = orden.get_carrito_total  # Calcula el total de cada orden
+        total_general += total_orden  # Suma al total general
+
+        orden_dict = {
+            'transaccion_id': orden.transaccion_id,
+            'fecha_orden': orden.fecha_orden,
+            'total_orden': total_orden,
+            'items': []
+        }
+
+        items_orden = orden.ordenitem_set.all()
+        for item in items_orden:
+            item_dict = {
+                'producto_nombre': item.Producto.nombre,
+                'producto_precio': item.Producto.precio,
+                'cantidad_comprada': item.cantidadProducto,
+                'total_item': item.get_total
+            }
+            orden_dict['items'].append(item_dict)
+        
+        lista_ordenes.append(orden_dict)
+
+    return render(request, 'ventas.html', {'ordenes': lista_ordenes, 'total_general': total_general,'categorias_nombres': categorias_nombres,
+        'categorias_porcentajes': categorias_porcentajes })
+
+       
+def usuarios_ordenes_completadas(request):
+    # Obtener todos los clientes que tienen al menos una orden
+    clientes = Cliente.objects.filter(orden__isnull=False).distinct()
+
+    # Preparar los datos de cada cliente
+    datos_clientes = []
+    for cliente in clientes:
+        ordenes_cliente = Orden.objects.filter(cliente=cliente)
+        
+        # Preparar detalles de las órdenes
+        ordenes_detalle = []
+        for orden in ordenes_cliente:
+            items = orden.ordenitem_set.all()
+            productos_detalle = [{
+                'nombre_producto': item.Producto.nombre,
+                'precio_unitario': item.Producto.precio,
+                'cantidad': item.cantidadProducto,
+                'subtotal': item.get_total
+            } for item in items]
+
+            ordenes_detalle.append({
+                'productos': productos_detalle,
+                'completada': orden.complete,
+                'total_orden': orden.get_carrito_total
+            })
+
+        datos_clientes.append({
+            'nombre': cliente.nombre + " " + cliente.apellido,
+            'email': cliente.usuario.email if cliente.usuario else "No Email",
+            'ordenes_detalle': ordenes_detalle,
+        })
+
+    return render(request, 'reporteUsuario.html', {'clientes': datos_clientes})

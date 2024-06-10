@@ -21,7 +21,7 @@ urlpatterns = [
     path('fabricado', fabricado, name='fabricado'),
     path('personalizado', personalizado, name='personalizado'),
     path('adminSistema', adminSistema, name='adminSistema'),
-    path('reporteria', reporteria, name='reporteria'),
+    
     path('gestionUsuario', gestionUsuario, name='gestionUsuario'),
     path('adminContenido/', views.adminContenido, name='adminContenido'),
     path('busqueda/',busquedaproducto,name="busqueda"),
@@ -54,6 +54,8 @@ urlpatterns = [
 
 
 
+
+
     path('pagAdmin', pagAdmin, name='pagAdmin'),
 
 
@@ -67,7 +69,8 @@ urlpatterns = [
     path('gestionUsuarios', gestionUsuarios, name="gestionUsuarios"),
     
     
-
+    path('ventas/', mostrar_ventas, name='mostrar-ventas'),
+    path('reporteUsuarios/', usuarios_ordenes_completadas, name='reporte_usuarios'),
 
 
 ]
