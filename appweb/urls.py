@@ -71,6 +71,10 @@ urlpatterns = [
     
     path('ventas/', mostrar_ventas, name='mostrar-ventas'),
     path('reporteUsuarios/', usuarios_ordenes_completadas, name='reporte_usuarios'),
-
+    
+    
+    
+    path('misCompras/',views.misCompras, name='misCompras'),
+    path('calificaciones/',views.calificaciones, name='calificaciones'),
 
 ]

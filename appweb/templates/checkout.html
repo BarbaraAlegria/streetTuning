@@ -4,6 +4,30 @@
 {% block contenido %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
+<script>
+    function CompraRealizada(event) {
+        event.preventDefault(); 
+        Swal.fire({
+            title: "Felicitaciones",
+            text: "Tu orden está en preparación. ¿Te gustaría calificarnos?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Sí",
+            cancelButtonText: "No",
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                document.getElementById("form").submit();
+                window.location.href = "{% url 'calificaciones' %}"; // Asegúrate de que esta URL es correcta
+            }
+            else if (result.dismiss === Swal.DismissReason.cancel){
+                window.location.href = "{% url 'misCompras' %}";
+            }
+                
+            
+
+        })
+    }
+</script>
 <div class="container">
     <div class="row">
         {{mensaje}}

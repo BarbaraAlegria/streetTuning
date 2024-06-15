@@ -188,9 +188,6 @@ def adminSistema(request):
     # Lógica para la vista de adminSistema
     return render(request, "adminSistema.html")
 
-def reporteria(request):
-    # Lógica para la vista de reporteria
-    return render(request, "reporteria.html")
 
 def gestionUsuario(request):
     # Obtener la lista de usuarios registrados
@@ -225,7 +222,7 @@ def entrega_envio(request, id):
     return redirect(to="listar_envios")
 
 
-################# mantenedor ipiniones ##############
+################# mantenedor opiniones ##############
 def listar_opinion(request):
     opinion = Opinion.objects.all()
     data = {
@@ -469,14 +466,18 @@ def submit_shipping(request):
         # Marcar la orden como completa
         orden.complete = True
         orden.save()
+        messages.success(request, "Tu orden está en preparación, Animate y dinos tu experiencia ")
 
-        return render(request, 'checkout.html', {'message': "Tus productos están en preparación"})
-
+        return render(request, "calificaciones.html")
     # Obtener la información del usuario logueado
     user = request.user
     cliente = Cliente.objects.filter(usuario=user).first()
+    
+        # manejar otros métodos o errores
+        
+    return redirect(to="misCompras")
 
-    return render(request, 'checkout.html')  # Reemplaza con tu plantilla
+      # Reemplaza con tu plantilla
 
 
 #**************busqueda por categoria******
@@ -573,3 +574,61 @@ def usuarios_ordenes_completadas(request):
         })
 
     return render(request, 'reporteUsuario.html', {'clientes': datos_clientes})
+
+
+####++++++++++++Mis compras+++++++++++++++
+@login_required
+def misCompras(request):
+    cliente = Cliente.objects.filter(usuario=request.user, orden__complete=True).distinct().first()
+    if not cliente:
+        return HttpResponse("No hay órdenes completadas para mostrar.")
+
+    # Ordenar las órdenes por 'fecha_orden' de forma descendente
+    ordenes_cliente = Orden.objects.filter(cliente=cliente, complete=True).order_by('-fecha_orden')
+    
+    ordenes_detalle = []
+    for orden in ordenes_cliente:
+        items = orden.ordenitem_set.all()
+        direccion_envio = DireccionEnvio.objects.filter(orden=orden).first()
+
+        productos_detalle = [{
+            'nombre_producto': item.Producto.nombre,
+            'precio_unitario': item.Producto.precio,
+            'cantidad': item.cantidadProducto,
+            'subtotal': item.get_total,
+            'foto_url': item.Producto.foto.url if item.Producto.foto else None
+        } for item in items]
+
+        ordenes_detalle.append({
+            'fecha': orden.fecha_orden,
+            'productos': productos_detalle,
+            'estado_envio': direccion_envio.Estado if direccion_envio else 'No disponible',
+            'total_orden': orden.get_carrito_total
+        })
+
+    return render(request, 'misCompras.html', {
+        'cliente': cliente.nombre + " " + cliente.apellido,
+        'email': cliente.usuario.email,
+        'ordenes_detalle': ordenes_detalle
+    })
+
+
+
+
+@login_required
+def calificaciones(request):
+    if request.method == 'POST':
+        estrellas = request.POST.get('estrellas')
+        comentario = request.POST.get('comentario')
+        
+        if not estrellas:
+            return HttpResponse("Debes seleccionar un número de estrellas.", status=400)
+        
+        Valoracion.objects.create(
+            estrellas=estrellas,
+            comentario=comentario
+        )
+
+    return render(request, 'calificaciones.html')
+
+

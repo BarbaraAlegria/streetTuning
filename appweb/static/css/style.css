@@ -148,6 +148,13 @@
 	cursor: pointer;
 	transition: background-color 0.3s;
 }
+.btn-corner {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    color: #13AEB4;        /* Color del texto */
+    border-color: #13AEB4; /* Color del borde */
+}
 
 .btn-agregar:hover {
 	background-color: #0D98B6;
@@ -238,5 +245,12 @@
 }
 
 
-/* Estilos específicos para stock*/
+/* Estilos específicos para estrellas */
+.checked {
+	color: orange;
+  }
 
+
+
+
+  /*estrellas */

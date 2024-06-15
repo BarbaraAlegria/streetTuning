@@ -22,3 +22,5 @@ admin.site.register(Orden, OrdenAdmin)
 admin.site.register(OrdenItem)
 admin.site.register(DireccionEnvio)
 admin.site.register(Opinion)
+admin.site.register(Valoracion)
+

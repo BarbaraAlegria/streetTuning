@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<style>
+    .card-header, .card-footer {
+        background-color: #13AEB4;
+        color: white;
+        font-weight: bold;
+        
+        
+        
+    }
+    .card-body {
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
+    .product-image {
+        width: 100px;
+        height: auto;
+        border-radius: 5px;
+    }
+    .product-details {
+        display: flex;
+        align-items: center;
+    }
+    .product-name {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .table {
+        margin-top: 20px;
+    }
+    .table th, .table td {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="container mt-5">
+    <h1 class="catalog-item-title">Mis Compras</h1>
+    
+    {% for orden in ordenes_detalle %}
+        <div class="card my-3">
+            <div class="card-header">
+                
+                <h5>Fecha de compra: {{ orden.fecha }}</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Nombre</th>
+                            <th>Precio Unitario</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for producto in orden.productos %}
+                        <tr>
+                            <td>
+                                <div class="product-details">
+                                    <img src="{{ producto.foto_url }}" alt="{{ producto.nombre_producto }}" class="product-image">
+                                    
+                                </div>
+                            </td>
+                            <td><span class="product-name">{{ producto.nombre_producto }}</span></td>
+                            <td>${{ producto.precio_unitario }}</td>
+                            <td>{{ producto.cantidad }}</td>
+                            <td>${{ producto.subtotal }}</td>
+                        </tr>
+                    {% endfor %}
+                    <span class="product-name">Estado del Envío: {{ orden.estado_envio }}</span>
+                    </tbody>
+                </table>
+                <span class="product-name">Total de la Compra: ${{ orden.total_orden }}</span>
+            </div>
+        </div>
+    {% empty %}
+        <p>No tienes órdenes completadas.</p>
+    {% endfor %}
+</div>
+{% endblock %}
