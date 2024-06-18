@@ -615,20 +615,28 @@ def misCompras(request):
 
 
 
-@login_required
-def calificaciones(request):
-    if request.method == 'POST':
-        estrellas = request.POST.get('estrellas')
-        comentario = request.POST.get('comentario')
-        
-        if not estrellas:
-            return HttpResponse("Debes seleccionar un número de estrellas.", status=400)
-        
-        Valoracion.objects.create(
-            estrellas=estrellas,
-            comentario=comentario
-        )
+
+@csrf_protect
+def submit_rating(request):
+    if request.method == "POST":
+        rating = request.POST.get("rating")
+        review = request.POST.get("review")
+
+        # Guarda la calificación y el comentario en la base de datos
+        Rating.objects.create(rating=rating, review=review)
+        messages.success(request, "Gracias por tu tiempo")
+
+        return redirect('misCompras')  # Redirige a la página de calificaciones
 
     return render(request, 'calificaciones.html')
 
+def lista_calificaciones(request):
+    rating = Rating.objects.all()
+    range_ = range(1, 6) 
+    data ={
+        'rating' : rating,
+        'range' : range_
+        
+    }
+    return render(request, "home.html",data)
 

@@ -4,7 +4,6 @@
 {% block contenido %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 
-
 <style>
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 *{
@@ -55,8 +54,8 @@
   float: right;
   transition: all 0.2s ease;
 }
-input:not(:checked) ~ label:hover,
-input:not(:checked) ~ label:hover ~ label{
+input:not(:checked) ~form label:hover,
+input:not(:checked) ~form label:hover ~ label{
   color: #fd4;
 }
 input:checked ~ label{
@@ -146,60 +145,67 @@ form .btn button:hover{
   background: #515050;
 }
 
-
-</style>
-
+</style>    
 <div class="im">
-    <button href="{% url 'misCompras' %}" data-action="add" class="btn-agregar">
-        &#x2190; Ir a mis compras
-    </button>
-    <a class="btn" href="{% url 'misCompras' %}" style="color: #13AEB4; border-color: #13AEB4;" position: fixed; >&#x2190; Ir a mis compras</a>
-
-    <br><br>
-    
+    <br>
+    <a class="btn-agregar" href="{% url 'misCompras' %}">&#x2190; Ir a mis compras</a>
+    <br>
     <div class="containeruno">
-        <img src="{% static 'imagenes/logotienda.png' %}"  width="400" height="400" />
-      <div class="post">
-        <div class="text">Thanks for rating us!</div>
-        <div class="edit">EDIT</div>
-      </div>
-      <div class="star-widget">
-        <input type="radio" name="rate" id="rate-5">
-        <label for="rate-5" class="fas fa-star"></label>
-        <input type="radio" name="rate" id="rate-4">
-        <label for="rate-4" class="fas fa-star"></label>
-        <input type="radio" name="rate" id="rate-3">
-        <label for="rate-3" class="fas fa-star"></label>
-        <input type="radio" name="rate" id="rate-2">
-        <label for="rate-2" class="fas fa-star"></label>
-        <input type="radio" name="rate" id="rate-1">
-        <label for="rate-1" class="fas fa-star"></label>
-        <form action="#">
-          <header></header>
-          <div class="textarea">
-            <textarea cols="30" placeholder="Describe tu experiencia.."></textarea>
-          </div>
-          <div class="btn">
-            <button type="submit">Enviar</button>
-          </div>
-        </form>
-      </div>
+        <img src="{% static 'imagenes/logotienda.png' %}" width="400" height="400" />
+        <div class="post">
+            <div class="text">Thanks for rating us!</div>
+            <div class="edit">EDIT</div>
+        </div>
+        <div class="star-widget">
+            <input type="radio" name="rating" id="rate-5" value="5">
+            <label for="rate-5" class="fas fa-star"></label>
+            <input type="radio" name="rating" id="rate-4" value="4">
+            <label for="rate-4" class="fas fa-star"></label>
+            <input type="radio" name="rating" id="rate-3" value="3">
+            <label for="rate-3" class="fas fa-star"></label>
+            <input type="radio" name="rating" id="rate-2" value="2">
+            <label for="rate-2" class="fas fa-star"></label>
+            <input type="radio" name="rating" id="rate-1" value="1">
+            <label for="rate-1" class="fas fa-star"></label>
+            
+            <form action="{% url 'calificaciones' %}" method="POST">
+                {% csrf_token %}
+                <header></header>
+                <input type="hidden" id="rating-value" name="rating" value="">
+
+                <div class="textarea">
+                    <textarea name="review" cols="30" placeholder="Describe tu experiencia.."></textarea>
+                </div>
+                <div class="btn">
+                    <button type="submit">Enviar</button>
+                </div>
+            </form>
+        </div>
     </div>
     <br><br><br>
     <script>
-      const btn = document.querySelector("button");
-      const post = document.querySelector(".post");
-      const widget = document.querySelector(".star-widget");
-      const editBtn = document.querySelector(".edit");
-      btn.onclick = ()=>{
-        widget.style.display = "none";
-        post.style.display = "block";
-        editBtn.onclick = ()=>{
-          widget.style.display = "block";
-          post.style.display = "none";
+        const ratingInputs = document.querySelectorAll('input[name="rating"]');
+        const ratingValue = document.getElementById('rating-value');
+
+        ratingInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                ratingValue.value = input.value;
+            });
+        });
+
+        const btn = document.querySelector("button");
+        const post = document.querySelector(".post");
+        const widget = document.querySelector(".star-widget");
+        const editBtn = document.querySelector(".edit");
+        btn.onclick = () => {
+            widget.style.display = "none";
+            post.style.display = "block";
+            editBtn.onclick = () => {
+                widget.style.display = "block";
+                post.style.display = "none";
+            }
+            return false;
         }
-        return false;
-      }
     </script>
-  </div>
+</div>
 {% endblock %}

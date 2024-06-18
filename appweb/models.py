@@ -114,10 +114,10 @@ class Opinion(models.Model):
         return f"{self.nombre}  {self.id}"
     
 
-class Valoracion(models.Model):
-    estrellas = models.IntegerField()
-    comentario = models.TextField(blank=True, null=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+class Rating(models.Model):
+    rating = models.IntegerField()
+    review = models.TextField()
 
     def __str__(self):
-        return f"{self.comentario}: {self.estrellas} estrellas"
+        return f'Rating: {self.rating}, Review: {self.review}'

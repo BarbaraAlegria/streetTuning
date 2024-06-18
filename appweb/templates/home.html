@@ -9,86 +9,89 @@
 {% block contenido %}
 
 <!--- Carrusel de imágenes -->
-      <div id="carouselExampleCaptions" class="carousel slide">
-        <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-            aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <a href="{% url 'pagAccesorios' %}"><img src="{% static './imagenes/pagAccesorios.png' %}" class="d-block w-100"
-                alt="..."></a>
-            <div class="carousel-caption d-none d-md-block">
-            </div>
-          </div>
-          <div class="carousel-item">
-            <a href="{% url 'pagStickers' %}"><img src="{% static './imagenes/pagStickers.png' %}" class="d-block w-100"
-                alt="..."></a>
-            <div class="carousel-caption d-none d-md-block">
-            </div>
-          </div>
-          <div class="carousel-item">
-            <a href="{% url 'pagTsurikawa' %}"><img src="{% static './imagenes/pagTsurikawa.png' %}" class="d-block w-100"
-                alt="..."></a>
-            <div class="carousel-caption d-none d-md-block">
-            </div>
-          </div>
-        </div>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+<div id="carouselExampleCaptions" class="carousel slide">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+      aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <a href="{% url 'pagAccesorios' %}"><img src="{% static './imagenes/pagAccesorios.png' %}" class="d-block w-100"
+          alt="..."></a>
+      <div class="carousel-caption d-none d-md-block">
       </div>
+    </div>
+    <div class="carousel-item">
+      <a href="{% url 'pagStickers' %}"><img src="{% static './imagenes/pagStickers.png' %}" class="d-block w-100"
+          alt="..."></a>
+      <div class="carousel-caption d-none d-md-block">
+      </div>
+    </div>
+    <div class="carousel-item">
+      <a href="{% url 'pagTsurikawa' %}"><img src="{% static './imagenes/pagTsurikawa.png' %}" class="d-block w-100"
+          alt="..."></a>
+      <div class="carousel-caption d-none d-md-block">
+      </div>
+    </div>
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 
 <!-- Imagen de compra -->
-      <div>
-        <img src="{% static './imagenes/compra.png' %}" alt="Descripción de la imagen" class="img-fluid mb-4"
-          style="width: 100%; max-height: 400px;">
-      </div>
+<div>
+  <img src="{% static './imagenes/compra.png' %}" alt="Descripción de la imagen" class="img-fluid mb-4"
+    style="width: 100%; max-height: 400px;">
+</div>
 
 <!-- Después del bloque de la imagen de compra -->
-        <button
-          style="display: block; width: 100%; height: 30px; margin: -25px 0 0 0; padding: 0; background-color: purple; border: none;">
-        </button>
+<button
+  style="display: block; width: 100%; height: 30px; margin: -25px 0 0 0; padding: 0; background-color: purple; border: none;">
+</button>
 
 <br>
 <!-- Título encima de las imágenes -->
-        <h2 class="text-center mb-4">
-          Producto<span class="text-purple-underline">s</span> Destacados
-        </h2>
+<h2 class="text-center mb-4">
+  Productos<span class="text-purple-underline"></span> Destacados
+</h2>
 
 
 
 <!-- Imágenes debajo de la franja -->
-        <div class="imagenes-bajo-franja row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
-              <div class="card">
-                  <img src="{% static './imagenes/tapaValvulaNegraMorado.png' %}" class="card-img-top img-thumbnail" alt="Imagen 1" style=" width: 700px; height: 500px;">
-              </div>
-          </div>
-          <div class="col">
-              <div class="card">
-                  <img src="{% static './imagenes/luzNeon.png' %}" class="card-img-top img-thumbnail" alt="Imagen 2" style=" width: 700px; height: 500px;">
-              </div>
-          </div>
-          <div class="col">
-              <div class="card">
-                  <img src="{% static './imagenes/instagram.png' %}" class="card-img-top img-thumbnail" alt="Imagen 3" style=" width: 700px; height: 500px;">
-              </div>
-          </div>
-        </div>
+<div class="imagenes-bajo-franja row row-cols-1 row-cols-md-3 g-4">
+  <div class="col">
+    <div class="card">
+      <img src="{% static './imagenes/tapaValvulaNegraMorado.png' %}" class="card-img-top img-thumbnail" alt="Imagen 1"
+        style=" width: 700px; height: 500px;">
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+      <img src="{% static './imagenes/luzNeon.png' %}" class="card-img-top img-thumbnail" alt="Imagen 2"
+        style=" width: 700px; height: 500px;">
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+      <img src="{% static './imagenes/instagram.png' %}" class="card-img-top img-thumbnail" alt="Imagen 3"
+        style=" width: 700px; height: 500px;">
+    </div>
+  </div>
+</div>
 
 
 <div class="row mt-3" id="menu">
 
-<!--- Misión -->
+  <!--- Misión -->
   <div class="col-md-4 p-3">
     <center>
       <h4> MISIÓN </h4>
@@ -104,7 +107,7 @@
     </center>
   </div>
 
-<!--- Visión -->
+  <!--- Visión -->
   <div class="col-md-4 p-3">
     <form class="row">
       <center>
@@ -122,19 +125,157 @@
     </form>
   </div>
 
-<!-- Contáctenos -->
-      <div class="col-md-4 p-3">
-        <h4>Contáctenos</h4>
-        <p>
-          Dirección: Vasco Nuñez De Balboa #0657, La Granja<br>
-          Fono: + 56 9 53431025 <br>
-          Horario de atención: Lunes a Viernes, de 10:00 a 21:00 <br>
-          E-mail: contacto@streettuning.cl
-        </p>
-      </div>
+  <!-- Contáctenos -->
+  <div class="col-md-4 p-3">
+    <h4>Contáctenos</h4>
+    <p>
+      Dirección: Vasco Nuñez De Balboa #0657, La Granja<br>
+      Fono: + 56 9 53431025 <br>
+      Horario de atención: Lunes a Viernes, de 10:00 a 21:00 <br>
+      E-mail: contacto@streettuning.cl
+    </p>
+  </div>
 </div>
 
 </body>
 
-</html>
-{% endblock %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  ::selection {
+    background: rgba(23, 162, 184, 0.3);
+  }
+
+  .wrapper {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .wrapper .box {
+    background: #fafbfc;
+    width: calc(33% - 10px);
+    padding: 25px;
+    border-radius: 3px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    margin: 10px 0;
+  }
+
+  .wrapper .box i.quote {
+    font-size: 20px;
+    color: #17a2b8;
+  }
+
+  .wrapper .box .content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+  }
+
+  .box .info .stars {
+    margin-top: 3px;
+  }
+
+  .box .info .stars i {
+    color: #e2b618;
+  }
+
+  .box .content .image {
+    height: 75px;
+    width: 75px;
+    padding: 1px;
+    background: #0e0f0f;
+    border-radius: 50%;
+  }
+
+  .content .image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
+
+  .box:hover .content .image img {
+    border-color: #fff;
+  }
+
+  @media (max-width: 1045px) {
+    .wrapper .box {
+      width: calc(50% - 10px);
+      margin: 10px 0;
+    }
+  }
+
+  @media (max-width: 702px) {
+    .wrapper .box {
+      width: 100%;
+    }
+  }
+</style>
+<h2 class="text-center mb-4">
+  Valoraciones!!<span class="text-purple-underline"></span>
+  <i class="fas fa-star" style="color:  purple;"></i>
+  <i class="fas fa-star" style="color: rgb(151, 19, 151);"></i>
+  <i class="fas fa-star" style="color: rgb(168, 41, 168);"></i>
+  <i class="fas fa-star" style="color:  rgb(191, 88, 191)"></i>
+  <i class="fas fa-star" style="color: rgb(212, 109, 212);"></i>
+</h2>
+
+
+
+<div class="wrapper">
+
+  {% for p in rating %}
+  <div class="box">
+    <i class="fas fa-quote-left quote"></i>
+    <p>{{ p.review }}</p>
+    <div class="content">
+      <div class="info">
+        <div class="stars" data-rating="{{ p.rating }}">
+          <!-- Las estrellas se generarán dinámicamente usando JavaScript -->
+        </div>
+      </div>
+      <div class="image">
+        <img src="{% static 'imagenes/logotienda.png' %}" alt="">
+      </div>
+    </div>
+
+  </div>
+
+
+  {% endfor %}
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const starElements = document.querySelectorAll('.stars');
+      starElements.forEach(stars => {
+        const rating = parseInt(stars.getAttribute('data-rating'));
+        for (let i = 1; i <= 5; i++) {
+          const star = document.createElement('i');
+          star.classList.add('fa-star', 'fa-2x');
+          if (i <= rating) {
+            star.classList.add('fas');
+          } else {
+            star.classList.add('far');
+          }
+          stars.appendChild(star);
+        }
+      });
+    });
+  </script>
+
+  </html>
+  {% endblock %}
