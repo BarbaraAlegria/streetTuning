@@ -3,29 +3,11 @@
 
 {% block contenido %}
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelector('#contacto').addEventListener('submit', function (event) {
-            event.preventDefault();
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Registro Exitoso',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(function () {
-                event.target.submit();
-            });
-        });
-    });
-</script>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrarse</title>
     <style>
-        /* Estilos específicos para la página de registro */
         .registro-container {
             max-width: 700px;
             margin: 50px auto;
@@ -45,6 +27,7 @@
         }
 
         .registro-form input[type="text"],
+        .registro-form input[type="email"],
         .registro-form input[type="password"] {
             width: 100%;
             padding: 10px;
@@ -74,33 +57,14 @@
         <div class="registro-container">
             <h2>Registrarse</h2>
             <div class="card-body">
-                {{mensaje}}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
                 <form class="registro-form" id="loginForm" action="" method="POST">
                     {% csrf_token %}
-                    <div class="form-group">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" class="form-control" name="nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nombre">Apellido:</label>
-                        <input type="text" class="form-control" name="apellido" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="nombre">Correo:</label>
-                        <input type="text" class="form-control" name="correo" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="nombre">Password:</label>
-                        <input type="password" class="form-control" name="password1" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="nombre">Repita su Password:</label>
-                        <input type="password" class="form-control" name="password2" required>
-                    </div>
-
+                    {{ form.as_p }}
                     <div class="col-12">
                         <button type="submit" style="width: 100%">Registrar</button>
                     </div>
@@ -108,6 +72,7 @@
                 <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
             </div>
         </div>
+    </div>
 </body>
 
 {% endblock %}

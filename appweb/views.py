@@ -1,18 +1,19 @@
+import json
 import logging
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
-
-from django.http import HttpResponse, HttpResponseRedirect
-
-
-
-
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
+from django.db.models import Sum, F
+from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from .forms import *
 from .models import *
+import csv
 logger = logging.getLogger(__name__)
 msgFormNotValid="Formulario no valido"
 
@@ -27,6 +28,9 @@ def pagAccesorios(request):
 def pagStickers(request):
     # Lógica para la vista de stickers
     return render(request, "pagStickers.html")
+def gestionUsuarios(request):
+    # Lógica para la vista de stickers
+    return render(request, "gestionUsuarios.html")
 
 def pagTsurikawa(request):
     tsurikawa = Producto.objects.filter(categoria__id_categoria='b71c5013-d436-4e2b-902d-690b822080dd')
@@ -38,8 +42,19 @@ def pagTsurikawa(request):
     return render(request, "pagTsurikawa.html",data)
 
 def pagOpiniones(request):
-    # Lógica para la vista de opiniones y/o sugerencias
-    return render(request, "pagOpiniones.html")
+    data= {
+        'form' : OpinionForm,
+        'mensaje' :""
+    }
+    if request.method =="POST":
+        formulario= OpinionForm(data=request.POST, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            data['mensaje'] = "Presonalización Enviada"
+        else:
+            data['form'] = formulario
+            data['mensaje'] = "Ocurrio un error"
+    return render(request, "pagOpiniones.html",data)
        
 def login(request):
     print("Bienvenido "+ request.user.username)
@@ -47,42 +62,40 @@ def login(request):
 
     print("Grupos", request.user.groups.all())
 
-    if request.user.groups.filter(name='user'):
+    if request.user.groups.filter(name='user').exists():
         print("Es un user")
 
     return redirect(to='home')
 
 
 def registro(request):
-    data = {
-        "mensaje": ""
-    }
-    if request.POST:
-        nombre = request.POST.get("nombre")
-        apellido = request.POST.get("apellido")
-        correo = request.POST.get("correo")
-        password1 = request.POST.get("password1")
-        password2 = request.POST.get("password2")
-        if password1 != password2:
-            data["mensaje"] = "Las contraseñas deben ser iguales"
-        else:
-            usu = User()
-            usu.set_password(password1)
-            usu.email = correo
-            usu.username = nombre
-            usu.first_name = nombre
-            usu.last_name = apellido
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            usuario = form.save(commit=False)
+            password = form.cleaned_data['password1']
+            usuario.set_password(password)
+            usuario.save()
             grupo = Group.objects.get(name='user')
-            try:
-                usu.save()
-                usu.groups.add(grupo)
-                data["mensaje"] = "Usuario creado"
-                user = authenticate(username=usu.username, password=password1)
-                login(request, user)
-                return redirect(to='home')
-            except:
-                messages.error(request, msgFormNotValid)
-    return render(request, "registration/registro.html", data)
+            usuario.groups.add(grupo)
+            Cliente.objects.create(
+                usuario=usuario,
+                nombre=form.cleaned_data['first_name'],
+                apellido=form.cleaned_data['last_name'],
+                rut=form.cleaned_data.get('rut', '')  # Ajusta este campo según tus necesidades
+            )
+            # Autenticar y loguear al usuario
+            user = authenticate(username=usuario.username, password=password)
+            if user is not None:
+                auth_login(request, user)
+                return redirect('home')
+            else:
+                messages.error(request, "Hubo un error al autenticar el usuario.")
+        else:
+            messages.error(request, "Formulario inválido.")
+    else:
+        form = RegistroForm()
+    return render(request, 'registration/registro.html', {'form': form})
 
 
 def otros(request):
@@ -142,6 +155,13 @@ def fabricado(request):
     # Lógica para la vista de fabricado
     return render(request, "fabricado.html")
 
+def listar_personalizados(request):
+    personalizado = Personalizado.objects.all()
+    data = {
+        "personalizado" : personalizado
+    }
+    return render(request, "Mantenedor/personalizado/listar.html", data)
+
 def personalizado(request):
     data= {
         'form' : PersonalizadoForm,
@@ -158,13 +178,16 @@ def personalizado(request):
             
     return render(request, "personalizado.html",data)
 
+def eliminar_personalizado(request, id_personalizado):
+    personalizado = get_object_or_404(Personalizado, id_personalizado=id_personalizado)
+    personalizado.delete()
+    return redirect(to="listar_personalizados")
+
+
 def adminSistema(request):
     # Lógica para la vista de adminSistema
     return render(request, "adminSistema.html")
 
-def reporteria(request):
-    # Lógica para la vista de reporteria
-    return render(request, "reporteria.html")
 
 def gestionUsuario(request):
     # Obtener la lista de usuarios registrados
@@ -174,7 +197,43 @@ def gestionUsuario(request):
 def adminContenido(request):
     # Lógica para la vista de adminContenido de la pantalla del administrador
     return render(request, "adminContenido.html")
+################# mantenedor envios ##############
+def listar_envios(request):
+    envios = DireccionEnvio.objects.all()
+    data = {
+        "envios" : envios
+    }
+    return render(request, "Mantenedor/Envios/listar.html", data)
+def despacho_envio(request, id):
+    envio = get_object_or_404(DireccionEnvio, id=id)
+    envio.Estado='En Camino'
+    envio.save()
+    messages.success(request, "Pedido en Ruta")
+    return redirect(to="listar_envios")
 
+def entrega_envio(request, id):
+    recibidoPor=request.GET.get('recibidoPor', '')
+    envio = get_object_or_404(DireccionEnvio, id=id)
+    envio.Estado='Entregado'
+    envio.recibido=recibidoPor
+
+    envio.save()
+    messages.success(request, "Envio Entregado")
+    return redirect(to="listar_envios")
+
+
+################# mantenedor opiniones ##############
+def listar_opinion(request):
+    opinion = Opinion.objects.all()
+    data = {
+        "opinion" : opinion
+    }
+    return render(request, "Mantenedor/Opiniones/listar.html", data)
+
+def eliminar_opinion(request, id):
+    opinion = get_object_or_404(Opinion, id=id)
+    opinion.delete()
+    return redirect(to="listar_opinion")
 
 
 ################# mantenedor productos ##############
@@ -184,6 +243,7 @@ def listar_Productos(request):
         "productos" : productos
     }
     return render(request, "Mantenedor/Productos/listar.html", data)
+
 
 def agregar_producto(request):
     if request.method == "POST":
@@ -236,19 +296,191 @@ def pagAdmin(request):
 
 
 
-#*************CARRITO DE COMPRA************
-
 def carrito(request):
-    # Lógica para la vista de carrito
-    return render(request, "carrito.html")
+    if request.user.is_authenticated:
+        # Intenta obtener el cliente relacionado con el usuario autenticado
+        try:
+            cliente = Cliente.objects.get(usuario=request.user)
+            orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+            items = orden.ordenitem_set.all()
+        except Cliente.DoesNotExist:
+            # Si no existe un cliente para el usuario, maneja la situación (e.g., mostrar mensaje o crear perfil de cliente)
+            items = []
+            orden = {'get_carrito_total':0, 'get_carrito_items':0}
+            # Puedes elegir renderizar la misma página con un mensaje de error o manejar de otra forma
+    else:
+        items = []
+        orden = {'get_carrito_total':0, 'get_carrito_items':0}
+    
+    context = {'items': items, 'orden': orden}
+    return render(request, "carrito.html", context)
 def checkout(request):
-      context = {}
-      return render(request, 'checkout.html', context)
+      
+    if request.user.is_authenticated:
+        # Intenta obtener el cliente relacionado con el usuario autenticado
+        try:
+            cliente = Cliente.objects.get(usuario=request.user)
+            orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+            items = orden.ordenitem_set.all()
+        except Cliente.DoesNotExist:
+            # Si no existe un cliente para el usuario, maneja la situación (e.g., mostrar mensaje o crear perfil de cliente)
+            items = []
+            orden = {'get_carrito_total':0, 'get_carrito_items':0}
+            # Puedes elegir renderizar la misma página con un mensaje de error o manejar de otra forma
+    else:
+        items = []
+        orden = {'get_carrito_total':0, 'get_carrito_items':0}
+    
+    context = {'items': items, 'orden': orden}
+    return render(request, 'checkout.html', context)
 
+@csrf_exempt
+def update_cart(request):
+    data = json.loads(request.body)
+    product_id = data['productId']
+    action = data['action']
+
+    user = request.user
+    cliente, created = Cliente.objects.get_or_create(usuario=user)
+    producto = Producto.objects.get(id_producto=product_id)
+    orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+    orden_item, created = OrdenItem.objects.get_or_create(orden=orden, Producto=producto)
+
+    if action == 'add':
+        if orden_item.cantidadProducto < producto.cantidad:
+            orden_item.cantidadProducto += 1
+        else:
+            return JsonResponse({'status': 'error', 'message': 'No hay suficiente stock disponible.'}, safe=False)
+    elif action == 'remove':
+        orden_item.cantidadProducto -= 1
+
+    orden_item.save()
+
+    if orden_item.cantidadProducto <= 0:
+        orden_item.delete()
+
+    return JsonResponse({'status': 'success', 'cart_items': orden.get_carrito_items}, safe=False)
+
+
+@csrf_exempt
+def update_cart_quantity(request):
+    data = json.loads(request.body)
+    product_id = data['productId']
+    action = data['action']
+
+    user = request.user
+    cliente, created = Cliente.objects.get_or_create(usuario=user)
+    producto = Producto.objects.get(id_producto=product_id)
+    orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+    orden_item, created = OrdenItem.objects.get_or_create(orden=orden, Producto=producto)
+
+    if action == 'add':
+        if orden_item.cantidadProducto < producto.cantidad:
+            orden_item.cantidadProducto += 1
+        else:
+            return JsonResponse({'status': 'error', 'message': 'No hay suficiente stock disponible.'}, safe=False)
+    elif action == 'remove':
+        orden_item.cantidadProducto -= 1
+
+    orden_item.save()
+
+    if orden_item.cantidadProducto <= 0:
+        orden_item.delete()
+
+    return JsonResponse({'status': 'success', 'cart_items': orden.get_carrito_items}, safe=False)
+
+def base(request):
+    if request.user.is_authenticated:
+        try:
+            cliente = Cliente.objects.get(usuario=request.user)
+            orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+            items = orden.ordenitem_set.all()
+            carritoItems = orden.get_carrito_items
+        except Cliente.DoesNotExist:
+            items = []
+            orden = {'get_carrito_total':0, 'get_carrito_items':0}
+            carritoItems = orden['get_carrito_items']
+    else:
+        items = []
+        orden = {'get_carrito_total':0, 'get_carrito_items':0}
+        carritoItems = orden['get_carrito_items']
+    
+    context = {'items': items, 'orden': orden, 'carritoItems': carritoItems}
+    return render(request, 'base.html', context)
+
+def get_cart_items(request):
+    if request.user.is_authenticated:
+        try:
+            cliente = Cliente.objects.get(usuario=request.user)
+            orden, created = Orden.objects.get_or_create(cliente=cliente, complete=False)
+            cart_items = orden.get_carrito_items
+        except Cliente.DoesNotExist:
+            cart_items = 0
+    else:
+        cart_items = 0
+
+    return JsonResponse({'cart_items': cart_items}, safe=False)
+
+
+
+def submit_shipping(request):
+    if request.method == 'POST':
+        address = request.POST['address']
+        city = request.POST['city']
+        comuna = request.POST['state']
+        codigo_postal = request.POST['zipcode']
+
+        # Validación básica
+        if not all([address, city, comuna, codigo_postal]):
+            return HttpResponse("Todos los campos son obligatorios.", status=400)
+
+        # Obtener el cliente y la orden asociados al usuario logueado
+        user = request.user
+        cliente = Cliente.objects.filter(usuario=user).first()
+        if not cliente:
+            return HttpResponse("Cliente no encontrado.", status=404)
+        
+        orden = Orden.objects.filter(cliente=cliente, complete=False).first()
+        if not orden:
+            return HttpResponse("Orden no encontrada.", status=404)
+
+        # Guardar la dirección de envío
+        DireccionEnvio.objects.create(
+            cliente=cliente,
+            orden=orden,
+            direccion=address,
+            ciudad=city,
+            comuna=comuna,
+            codigoPostal=codigo_postal
+        )
+
+        # Actualizar el stock de productos y completar la orden
+        orden_items = OrdenItem.objects.filter(orden=orden)
+        for item in orden_items:
+            producto = item.Producto
+            producto.cantidad -= item.cantidadProducto
+            if producto.cantidad < 0:
+                return HttpResponse(f"Stock insuficiente para el producto {producto.nombre}", status=400)
+            producto.save()
+
+        # Marcar la orden como completa
+        orden.complete = True
+        orden.save()
+        messages.success(request, "Tu orden está en preparación, Animate y dinos tu experiencia ")
+
+        return render(request, "calificaciones.html")
+    # Obtener la información del usuario logueado
+    user = request.user
+    cliente = Cliente.objects.filter(usuario=user).first()
+    
+        # manejar otros métodos o errores
+        
+    return redirect(to="misCompras")
+
+      # Reemplaza con tu plantilla
 
 
 #**************busqueda por categoria******
-
 
 def busquedaproducto(request):
     text = request.GET.get('search_text', '')
@@ -258,3 +490,145 @@ def busquedaproducto(request):
     }
 
     return render(request, "resultado_Busqueda.html", data)
+
+
+
+
+def mostrar_ventas(request):
+    ordenes_completadas = Orden.objects.filter(complete=True).prefetch_related('ordenitem_set__Producto')
+    lista_ordenes = []
+    total_general = 0  # Inicializa el total general
+     # Calcular ventas totales por categoría
+    ventas_por_categoria = Producto.objects.filter(
+        ordenitem__orden__complete=True
+    ).values('categoria__nombre').annotate(
+        total_vendido=Sum('ordenitem__cantidadProducto')
+    ).order_by('-total_vendido')
+
+    total_categorias = sum(item['total_vendido'] for item in ventas_por_categoria)
+
+    categorias_nombres = []
+    categorias_porcentajes = []
+    for categoria in ventas_por_categoria:
+        porcentaje = (categoria['total_vendido'] / total_categorias) * 100
+        categorias_nombres.append(categoria['categoria__nombre'])
+        categorias_porcentajes.append(round(porcentaje, 2))
+
+    for orden in ordenes_completadas:
+        total_orden = orden.get_carrito_total  # Calcula el total de cada orden
+        total_general += total_orden  # Suma al total general
+
+        orden_dict = {
+            'transaccion_id': orden.transaccion_id,
+            'fecha_orden': orden.fecha_orden,
+            'total_orden': total_orden,
+            'items': []
+        }
+
+        items_orden = orden.ordenitem_set.all()
+        for item in items_orden:
+            item_dict = {
+                'producto_nombre': item.Producto.nombre,
+                'producto_precio': item.Producto.precio,
+                'cantidad_comprada': item.cantidadProducto,
+                'total_item': item.get_total
+            }
+            orden_dict['items'].append(item_dict)
+        
+        lista_ordenes.append(orden_dict)
+
+    return render(request, 'ventas.html', {'ordenes': lista_ordenes, 'total_general': total_general,'categorias_nombres': categorias_nombres,
+        'categorias_porcentajes': categorias_porcentajes })
+
+       
+def usuarios_ordenes_completadas(request):
+    # Obtener todos los clientes que tienen al menos una orden
+    clientes = Cliente.objects.filter(orden__isnull=False).distinct()
+
+    # Preparar los datos de cada cliente
+    datos_clientes = []
+    for cliente in clientes:
+        ordenes_cliente = Orden.objects.filter(cliente=cliente)
+        
+        # Preparar detalles de las órdenes
+        ordenes_detalle = []
+        for orden in ordenes_cliente:
+            items = orden.ordenitem_set.all()
+            productos_detalle = [{
+                'nombre_producto': item.Producto.nombre,
+                'precio_unitario': item.Producto.precio,
+                'cantidad': item.cantidadProducto,
+                'subtotal': item.get_total
+            } for item in items]
+
+            ordenes_detalle.append({
+                'productos': productos_detalle,
+                'completada': orden.complete,
+                'total_orden': orden.get_carrito_total
+            })
+
+        datos_clientes.append({
+            'nombre': cliente.nombre + " " + cliente.apellido,
+            'email': cliente.usuario.email if cliente.usuario else "No Email",
+            'ordenes_detalle': ordenes_detalle,
+        })
+
+    return render(request, 'reporteUsuario.html', {'clientes': datos_clientes})
+
+
+####++++++++++++Mis compras+++++++++++++++
+@login_required
+def misCompras(request):
+    cliente = Cliente.objects.filter(usuario=request.user, orden__complete=True).distinct().first()
+    if not cliente:
+        return HttpResponse("No hay órdenes completadas para mostrar.")
+
+    # Ordenar las órdenes por 'fecha_orden' de forma descendente
+    ordenes_cliente = Orden.objects.filter(cliente=cliente, complete=True).order_by('-fecha_orden')
+    
+    ordenes_detalle = []
+    for orden in ordenes_cliente:
+        items = orden.ordenitem_set.all()
+        direccion_envio = DireccionEnvio.objects.filter(orden=orden).first()
+
+        productos_detalle = [{
+            'nombre_producto': item.Producto.nombre,
+            'precio_unitario': item.Producto.precio,
+            'cantidad': item.cantidadProducto,
+            'subtotal': item.get_total,
+            'foto_url': item.Producto.foto.url if item.Producto.foto else None
+        } for item in items]
+
+        ordenes_detalle.append({
+            'fecha': orden.fecha_orden,
+            'productos': productos_detalle,
+            'estado_envio': direccion_envio.Estado if direccion_envio else 'No disponible',
+            'total_orden': orden.get_carrito_total
+        })
+
+    return render(request, 'misCompras.html', {
+        'cliente': cliente.nombre + " " + cliente.apellido,
+        'email': cliente.usuario.email,
+        'ordenes_detalle': ordenes_detalle
+    })
+
+
+
+
+@login_required
+def calificaciones(request):
+    if request.method == 'POST':
+        estrellas = request.POST.get('estrellas')
+        comentario = request.POST.get('comentario')
+        
+        if not estrellas:
+            return HttpResponse("Debes seleccionar un número de estrellas.", status=400)
+        
+        Valoracion.objects.create(
+            estrellas=estrellas,
+            comentario=comentario
+        )
+
+    return render(request, 'calificaciones.html')
+
+

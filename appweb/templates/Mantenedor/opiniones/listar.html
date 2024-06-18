@@ -1,0 +1,77 @@
+
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<script>
+  function eliminaropinion(id) {
+    Swal.fire({
+      "title": "Advertencia",
+      "text": "¿Está seguro que desea eliminar esto?",
+      "icon": "question",
+      "showCancelButton": true,
+      "cancelButtonText": "No, cancelar",
+      "confirmButtonText": "Sí, eliminar"
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location.href = "/eliminar_opinion/" + id + "/";
+      }
+    })
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var rows = document.querySelectorAll('tbody tr');
+    rows.forEach(function(row) {
+      var cantidad = parseInt(row.cells[2].innerText);
+      if (cantidad <= 5) {
+        row.classList.add('low-stock');
+      }
+    });
+  });
+</script>
+<style>
+  .low-stock td {
+    color: red !important;
+    font-weight: bold !important;
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="text-center">
+    <h2 class="mt-4">Opiniones y Sugerencias </h2>
+  </div>
+ 
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Email</th>
+        <th scope="col">opinion</th>
+        <th scope="col">Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in opinion %}
+      <tr>
+        
+        <td>{{ p.id}}</td>
+        <td>{{ p.nombre }}</td>
+        <td><a href="mailto:{{ p.email }}">{{ p.email }}</a></td>
+        <td>{{ p.descripcion }}</td>
+       
+        <td>
+          
+          <a href="#" onclick="eliminaropinion('{{ p.id}}')" class="btn btn-danger btn-sm">Eliminar</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br>
+  <a class="btn btn-secondary btn" href="{% url 'pagAdmin' %}" role="button">Volver</a>
+</div>
+<br>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<style>
+    .card-header {
+        background-color: #d4dada;
+        color: rgb(17, 16, 16);
+    }
+
+    .card-body {
+        background-color: white;;
+    }
+
+    .card-footer {
+        background-color: #13AEB4;
+        color: white;
+    }
+    .estado-completada {
+        color: #28a745; /* Verde para completadas */
+    }
+
+    .estado-no-completada {
+        color: #dc3545; /* Rojo para no completadas */
+    }
+
+    .badge {
+        font-size: 100%;
+    }
+</style>
+<div class="container mt-5">
+    <h1>Reporte de Usuarios y sus Órdenes</h1>
+    {% for cliente in clientes %}
+    <div class="card mb-3">
+        <div class="card-header">
+            {{ cliente.nombre }} - <a href="mailto:{{ p.email }}">{{ cliente.email }}</a>
+        </div>
+        <div class="card-body">
+            {% for orden in cliente.ordenes_detalle %}
+            <div>
+                <h5>Estado de la Orden: <span class="{{ orden.completada|yesno:'estado-completada,estado-no-completada' }}">{{ orden.completada|yesno:"Completada,No Completada" }}</span></h5>
+                <p>Total de la Orden: ${{ orden.total_orden }}</p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio Unitario</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in orden.productos %}
+                        <tr>
+                            <td>{{ producto.nombre_producto }}</td>
+                            <td>${{ producto.precio_unitario }}</td>
+                            <td>{{ producto.cantidad }}</td>
+                            <td>${{ producto.subtotal }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

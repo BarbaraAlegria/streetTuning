@@ -5,15 +5,15 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
-    integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous">
-    </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-biQlFBE5Q6tK9cQe6ikf7b6dFkc0WuHx2PIbVTaVh4PPtrQEhLZz9BXDY9S6kk2m" crossorigin="anonymous">
-    </script>
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -21,9 +21,13 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
   <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
   <script src="{% static 'js/jquery.rut.js' %}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/calificacion.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/carrito.js' %}"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script type="text/javascript">
+    var user = "{{request.user}}"
+  </script>
 
   <title>Principal</title>
 
@@ -49,18 +53,34 @@
           <img src="{% static 'imagenes/logotienda.png' %}" class="bi me-2" width="100" height="100" />
         </a>
 
-
-
         <!-- Paginas de navegación -->
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-
-
           <li><a href="{% url 'home' %}" class="nav-link px-2 text-secondary">Home</a></li>
           <li><a href="{% url 'pagAccesorios' %}" class="nav-link px-2 text-white">Accesorios</a></li>
           <li><a href="{% url 'pagStickers' %}" class="nav-link px-2 text-white">Stickers</a></li>
           <li><a href="{% url 'pagTsurikawa' %}" class="nav-link px-2 text-white">Tsurikawa</a></li>
           <li><a href="{% url 'pagOpiniones' %}" class="nav-link px-2 text-white">Sugerencias</a></li>
-          <li><a href="{% url 'pagAdmin' %}" class="nav-link px-2 text-white">Admin</a></li>
+          <li><a href="{% url 'calificaciones' %}" class="nav-link px-2 text-white">calificaciones</a></li>
+          
+          
+          {% if user.is_authenticated %}
+            {% if user.groups.all|length > 0 %}
+              {% for group in user.groups.all %}
+                {% if group.name == "user" %}
+                  <li><a href="{% url 'misCompras'%}" class="nav-link px-2 text-white">Mis Compras</a></li>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endif %}
+          {% if user.is_authenticated %}
+            {% if user.groups.all|length > 0 %}
+              {% for group in user.groups.all %}
+                {% if group.name == "administrador" %}
+                  <li><a href="{% url 'pagAdmin' %}" class="nav-link px-2 text-white">Admin</a></li>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endif %}
 
         </ul>
 
@@ -88,36 +108,35 @@
 
         <!-- Carrito de compras -->
         <a href="{% url 'carrito' %}">
-          <img id="cart-icon" src="{% static 'imagenes/cart.png' %}">
+          <img id="cart-icon" src="{% static 'imagenes/cart.png' %}" alt="Carrito de compras">
         </a>
-        <p id="cart-total">0</p>
-
-        </a>
+        <span id="cart-total"></span>
       </div>
     </div>
   </header>
 
-
   <main>
     <div id="contenido">
       {% block contenido %}
+
       {% endblock %}
     </div>
 
-
   </main>
+
   <!-- FOOTER -->
+  
   <footer class="footer opinions-feedback-footer">
-    <div class="container">
+    
+      {% block mi_footer %}
+      {% endblock %}
       <p>© 2024 Compañía Street Tuning. Todos los derechos reservados.</p>
-    </div>
+    
   </footer>
 
   <div class="contenido">
     {% if messages %}
-
-    {% for m in messages%}
-
+    {% for m in messages %}
     {% if m.tags == "error" %}
     <script>
       Swal.fire({
@@ -126,7 +145,7 @@
         "icon": "{{m.tags}}"
       })
     </script>
-    {% else%}
+    {% else %}
     <script>
       Swal.fire({
         "title": "Felicitaciones",
@@ -135,49 +154,46 @@
       })
     </script>
     {% endif %}
-
     {% endfor %}
     {% endif %}
-
   </div>
 
+  
 
-  {% block mi_footer %}
-  {% endblock %}
-</body>
-
-<script>
-
-  $('#buscador').on('input', function (e) {
-    var search_text = this.value.trim()
-    console.log(search_text)
-    if (search_text == '') {
-      console.log('Texto vacio')
-      $('#resultado_busqueda').hide();
-      return;
-    }
-  });
-  $('#buscador').keyup(function (e) {
-    var search_text = this.value.trim()
-    console.log(search_text)
-    if (search_text == '') {
-      console.log('Texto vacio')
-      $('#resultado_busqueda').hide();
-      return;
-    }
-    $.ajax({
-      url: "/busqueda?search_text=" + search_text,
-      type: "GET",
-      dataType: "html",
-      success: (data) => {
-        $('#resultado_busqueda').html(data);
-        $('#resultado_busqueda').show();
-      },
-      error: (error) => {
-        console.log(error);
+  <script>
+    $('#buscador').on('input', function (e) {
+      var search_text = this.value.trim()
+      console.log(search_text)
+      if (search_text == '') {
+        console.log('Texto vacio')
+        $('#resultado_busqueda').hide();
+        return;
       }
     });
-  });
-</script>
+
+    $('#buscador').keyup(function (e) {
+      var search_text = this.value.trim()
+      console.log(search_text)
+      if (search_text == '') {
+        console.log('Texto vacio')
+        $('#resultado_busqueda').hide();
+        return;
+      }
+      $.ajax({
+        url: "/busqueda?search_text=" + search_text,
+        type: "GET",
+        dataType: "html",
+        success: (data) => {
+          $('#resultado_busqueda').html(data);
+          $('#resultado_busqueda').show();
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+    });
+  </script>
+
+</body>
 
 </html>
