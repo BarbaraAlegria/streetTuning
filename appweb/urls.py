@@ -77,6 +77,7 @@ urlpatterns = [
     path('misCompras/',views.misCompras, name='misCompras'),
     path('calificaciones/',views.submit_rating, name='calificaciones'),
 
-    
+
+   
 
 ]

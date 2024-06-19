@@ -39,8 +39,26 @@
   <div class="text-center">
     <h2 class="mt-4">Lista de Productos</h2>
   </div>
-  <a href="{% url 'agregar_producto' %}" class="btn btn-primary btn-sm">Agregar nuevo Producto</a>
-<br><br>
+  
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="{% url 'agregar_producto' %}" class="btn btn-primary btn-lg" style="background-color: #13AEB4; border: none;">Agregar nuevo Producto</a>
+    <!-- Filtro por categoría -->
+    <div class="col-md-4 p-3">
+      <form method="GET" action="">
+        <div class="form-group">
+          <select name="categoria" id="categoria" class="form-control">
+            <option value="">Todas las Categorías</option>
+            {% for categoria in categorias %}
+            <option value="{{ categoria.id_categoria }}" {% if categoria.id_categoria|stringformat:"s" == request.GET.categoria|stringformat:"s" %}selected{% endif %}>{{ categoria.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-secondary btn-sm" style="background-color: purple;">Aplicar Filtro</button>
+      </form>
+    </div>
+  </div>
+  
   <table class="table">
     <thead>
       <tr>
@@ -56,12 +74,11 @@
     <tbody>
       {% for p in productos %}
       <tr>
-        
-        <td>{{ p.id_producto}}</td>
+        <td>{{ p.id_producto }}</td>
         <td>{{ p.nombre }}</td>
         <td>{{ p.cantidad }}</td>
         <td>{{ p.precio }}</td>
-        <td>{{ p.categoria }}</td>
+        <td>{{ p.categoria.nombre }}</td>
         <td>
           {% if p.foto %}
           <img width="70" height="70" src="{{ p.foto.url }}" class="img-responsive wp-post-image" alt="" decoding="async" loading="lazy">
@@ -79,7 +96,7 @@
   </table>
   <br>
   <a class="btn btn-secondary btn" href="{% url 'pagAdmin' %}" role="button">Volver</a>
+  <br><br>
 </div>
-<br>
 
 {% endblock %}

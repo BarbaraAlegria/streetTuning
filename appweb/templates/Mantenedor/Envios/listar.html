@@ -41,6 +41,23 @@
         <h2 class="mt-4">Envíos</h2>
     </div>
     <br>
+
+    <!-- Filtro por estado -->
+    <div class="d-flex justify-content-between mb-3">
+       
+        <form method="GET" action="">
+            <div class="input-group">
+                <select name="estado" class="form-control">
+                    <option value="">Todos los Estados</option>
+                    <option value="Pendiente" {% if request.GET.estado == "Pendiente" %}selected{% endif %}>Pendiente</option>
+                    <option value="En Camino" {% if request.GET.estado == "En Camino" %}selected{% endif %}>En Camino</option>
+                    <option value="Entregado" {% if request.GET.estado == "Entregado" %}selected{% endif %}>Entregado</option>
+                </select>
+                <button type="submit" class="btn btn-secondary btn-sm" style="background-color: purple;">Aplicar Filtro</button>
+            </div>
+        </form>
+    </div>
+
     <table class="table">
         <thead>
             <tr>

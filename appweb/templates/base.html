@@ -131,10 +131,11 @@
   <footer class="footer opinions-feedback-footer">
 
     {% block mi_footer %}
-    {% endblock %}
+    
     <p>© 2024 Compañía Street Tuning. Todos los derechos reservados.</p>
-
+    {% endblock %}
   </footer>
+  
 
   <div class="contenido">
     {% if messages %}
@@ -160,7 +161,7 @@
     {% endif %}
   </div>
 
-
+  
 
   <script>
     $('#buscador').on('input', function (e) {

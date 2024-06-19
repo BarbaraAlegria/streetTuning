@@ -50,7 +50,8 @@ def pagOpiniones(request):
         formulario= OpinionForm(data=request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            data['mensaje'] = "Presonalización Enviada"
+            messages.success(request, "Sugerencia Enviada")
+            return redirect(to="pagAccesorios")
         else:
             data['form'] = formulario
             data['mensaje'] = "Ocurrio un error"
@@ -171,7 +172,8 @@ def personalizado(request):
         formulario= PersonalizadoForm(data=request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            data['mensaje'] = "Presonalización Enviada"
+            messages.success(request, "Solicitud enviada")
+            return redirect(to="pagAccesorios")
         else:
             data['form'] = formulario
             data['mensaje'] = "Ocurrio un error"
@@ -199,11 +201,16 @@ def adminContenido(request):
     return render(request, "adminContenido.html")
 ################# mantenedor envios ##############
 def listar_envios(request):
-    envios = DireccionEnvio.objects.all()
-    data = {
-        "envios" : envios
+    estado = request.GET.get('estado')
+    if estado:
+        envios = DireccionEnvio.objects.filter(Estado=estado).order_by('-fecha_agregado')
+    else:
+        envios = DireccionEnvio.objects.all().order_by('-fecha_agregado')
+    
+    context = {
+        'envios': envios,
     }
-    return render(request, "Mantenedor/Envios/listar.html", data)
+    return render(request, "Mantenedor/Envios/listar.html", context)
 def despacho_envio(request, id):
     envio = get_object_or_404(DireccionEnvio, id=id)
     envio.Estado='En Camino'
@@ -238,11 +245,13 @@ def eliminar_opinion(request, id):
 
 ################# mantenedor productos ##############
 def listar_Productos(request):
-    productos = Producto.objects.all()
-    data = {
-        "productos" : productos
-    }
-    return render(request, "Mantenedor/Productos/listar.html", data)
+    categoria_id = request.GET.get('categoria')
+    if categoria_id:
+        productos = Producto.objects.filter(categoria_id=categoria_id)
+    else:
+        productos = Producto.objects.all()
+    categorias = Categoria.objects.all()
+    return render(request, 'Mantenedor/Productos/listar.html', {'productos': productos, 'categorias': categorias})
 
 
 def agregar_producto(request):
@@ -495,7 +504,8 @@ def busquedaproducto(request):
 
 
 def mostrar_ventas(request):
-    ordenes_completadas = Orden.objects.filter(complete=True).prefetch_related('ordenitem_set__Producto')
+    ordenes_completadas = Orden.objects.filter(complete=True).prefetch_related('ordenitem_set__Producto').order_by('-fecha_orden')
+    
     lista_ordenes = []
     total_general = 0  # Inicializa el total general
      # Calcular ventas totales por categoría
@@ -544,6 +554,7 @@ def mostrar_ventas(request):
 def usuarios_ordenes_completadas(request):
     # Obtener todos los clientes que tienen al menos una orden
     clientes = Cliente.objects.filter(orden__isnull=False).distinct()
+    
 
     # Preparar los datos de cada cliente
     datos_clientes = []
@@ -613,9 +624,6 @@ def misCompras(request):
     })
 
 
-
-
-
 @csrf_protect
 def submit_rating(request):
     if request.method == "POST":
@@ -629,7 +637,7 @@ def submit_rating(request):
         return redirect('misCompras')  # Redirige a la página de calificaciones
 
     return render(request, 'calificaciones.html')
-
+@login_required
 def lista_calificaciones(request):
     rating = Rating.objects.all()
     range_ = range(1, 6) 

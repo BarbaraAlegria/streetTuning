@@ -50,14 +50,15 @@
 </style>
 
 <div class="custom-stickers-form">
-    <h2>Solicitar Stickers Personalizados</h2>
+    <h2>Opiniones o Sugerencias </h2>
     <form action="" method="POST"id="personalizado" enctype="multipart/form-data">
         {% csrf_token %}
 
         {{form | crispy}}
-        <button type="submit">Enviar Solicitud</button>
+        <button type="submit">Enviar</button>
     </form>
-    {{mensaje}}                           
+    {{mensaje}}     
+                       
 </div>
 
 {% endblock %}
