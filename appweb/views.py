@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, F
 from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
+from django.contrib.auth.decorators import login_required, permission_required
 from .forms import *
 from .models import *
 import csv
@@ -298,6 +299,8 @@ def modificar_producto(request,id_producto):
 
 
 #Tareas del administrador 
+@login_required(login_url='/accounts/login')
+@permission_required(['appweb.view_atencion'], login_url='/accounts/login')
 def pagAdmin(request):
     # Lógica para la vista de carrito
     return render(request, "pagAdmin.html")
@@ -623,7 +626,7 @@ def misCompras(request):
         'ordenes_detalle': ordenes_detalle
     })
 
-
+@login_required
 @csrf_protect
 def submit_rating(request):
     if request.method == "POST":
@@ -637,7 +640,7 @@ def submit_rating(request):
         return redirect('misCompras')  # Redirige a la página de calificaciones
 
     return render(request, 'calificaciones.html')
-@login_required
+
 def lista_calificaciones(request):
     rating = Rating.objects.all()
     range_ = range(1, 6) 
